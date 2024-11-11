@@ -4,7 +4,6 @@ import { Calendar, Clock, MonitorCog } from 'lucide-react';
 
 export default function Problem() {
     return (
-        <section className={'pb-16 pt-32'}>
             <div className={'flex flex-col'}>
                 <Title
                     title={'Gerenciar seus atendimentos é um desafio?'}
