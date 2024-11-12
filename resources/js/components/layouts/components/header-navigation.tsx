@@ -1,4 +1,5 @@
 import MenuMobile from '@/components/layouts/components/menu-mobile';
+import UserMenu from '@/components/layouts/components/user-menu';
 
 export default function HeaderNavigation() {
     return (
@@ -6,7 +7,9 @@ export default function HeaderNavigation() {
             <div className={'block md:hidden'}>
                 <MenuMobile />
             </div>
-            <div>User Menu</div>
+            <div>
+                <UserMenu />
+            </div>
         </div>
     );
 }
