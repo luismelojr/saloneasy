@@ -1,6 +1,7 @@
 interface PlanCardProps {
     title: string;
     price: number;
+    version: string;
     features: string[];
     isHighlighted?: boolean;
     action: (version: string) => void;
@@ -12,6 +13,7 @@ export default function PlanCard({
     features,
     isHighlighted,
     action,
+    version,
 }: PlanCardProps) {
     return (
         <div
@@ -79,7 +81,7 @@ export default function PlanCard({
                     <hr className="my-4 w-full" />
                     <button
                         type={'button'}
-                        onClick={() => action(title)}
+                        onClick={() => action(version)}
                         className={`group relative inline-flex h-10 w-full transform-gpu items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-md border border-input ${isHighlighted ? 'bg-primary text-muted' : 'bg-white text-foreground'} px-4 py-2 text-lg font-semibold tracking-tighter ring-offset-current transition-all duration-300 ease-out hover:bg-primary hover:text-white hover:ring-2 hover:ring-primary hover:ring-offset-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`}
                     >
                         Inscrever-se

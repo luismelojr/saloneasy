@@ -7,10 +7,21 @@ import Plans from '@/components/modules/landing-page/plans/plans';
 import Problem from '@/components/modules/landing-page/problem/problem';
 import Questions from '@/components/modules/landing-page/questions/questions';
 import Testimonials from '@/components/modules/landing-page/testimonials/testimonials';
+import { router } from '@inertiajs/react';
 
-export default function Welcome() {
+interface HomeProps {
+    essential: {
+        name: string;
+        price: number;
+    };
+    pro: {
+        name: string;
+        price: number;
+    };
+}
+export default function Home({ essential, pro }: HomeProps) {
     const handleNavigation = (action: 'login' | 'register') => {
-        console.log(action);
+        router.get(route(action));
     };
 
     return (
@@ -20,7 +31,7 @@ export default function Welcome() {
             <Problem />
             <Flow />
             <Testimonials />
-            <Plans />
+            <Plans essential={essential} pro={pro} />
             <Questions />
             <Finish action={handleNavigation} />
             <Footer />
