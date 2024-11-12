@@ -1,3 +1,4 @@
+import HeaderNavigation from '@/components/layouts/components/header-navigation';
 import Sidebar from '@/components/layouts/components/sidebar';
 
 export default function DashboardLayout() {
@@ -7,8 +8,8 @@ export default function DashboardLayout() {
                 <div className={'hidden h-full md:block'}>
                     <Sidebar />
                 </div>
-                <div className={'flex h-full w-full flex-col gap-4 pl-4 pt-5'}>
-                    <div>Aqui vai o header</div>
+                <div className={'flex h-full w-full flex-col gap-4 px-4 pt-5'}>
+                    <HeaderNavigation />
                     <div className={'border-t-[1px] pr-4 pt-5'}>
                         <h3 className={'text-2xl font-semibold'}>Titulo</h3>
                         <div className={'mt-6'}>children</div>
