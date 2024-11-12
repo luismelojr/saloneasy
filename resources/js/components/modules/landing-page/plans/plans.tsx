@@ -1,9 +1,20 @@
 import PlanCard from '@/components/ui/plan-card';
 import Title from '@/components/ui/title';
+import { router } from '@inertiajs/react';
 
-export default function Plans() {
+interface PlansProps {
+    essential: {
+        name: string;
+        price: number;
+    };
+    pro: {
+        name: string;
+        price: number;
+    };
+}
+export default function Plans({ essential, pro }: PlansProps) {
     const handleSelectPlan = (version: string) => {
-        console.log(version);
+        router.get(route('register', { plan: version }));
     };
 
     return (
@@ -23,11 +34,12 @@ export default function Plans() {
                     title={'Basico'}
                     price={0}
                     features={['1 Usuário', '5 GB de armazenamento']}
+                    version={'basic'}
                     action={handleSelectPlan}
                 />
                 <PlanCard
-                    title={'Essencial'}
-                    price={49.9}
+                    title={essential.name}
+                    price={essential.price}
                     features={[
                         '1 Usuário',
                         '5 GB de armazenamento',
@@ -35,11 +47,12 @@ export default function Plans() {
                         'Acesso total à API',
                     ]}
                     isHighlighted
+                    version={'essential'}
                     action={handleSelectPlan}
                 />
                 <PlanCard
-                    title={'Pro'}
-                    price={99.9}
+                    title={pro.name}
+                    price={pro.price}
                     features={[
                         '1 Usuário',
                         '5 GB de armazenamento',
@@ -47,6 +60,7 @@ export default function Plans() {
                         'Acesso total à API',
                         'Acesso a novos recursos',
                     ]}
+                    version={'pro'}
                     action={handleSelectPlan}
                 />
             </div>
