@@ -7,7 +7,7 @@ export default function HeaderNavigation() {
             <div className={'block md:hidden'}>
                 <MenuMobile />
             </div>
-            <div>
+            <div className={'flex items-center gap-4'}>
                 <UserMenu />
             </div>
         </div>

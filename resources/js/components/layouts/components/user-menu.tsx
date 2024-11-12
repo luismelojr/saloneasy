@@ -17,7 +17,7 @@ export default function UserMenu() {
                     className={'h-8 w-8 cursor-pointer border outline-none'}
                 >
                     <AvatarFallback>
-                        <span className="text-xs">LH</span>
+                        <span className="text-xs text-foreground">LH</span>
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
@@ -31,7 +31,7 @@ export default function UserMenu() {
                         <span className={'truncate'}>Luis Henrique</span>
                         <span
                             className={
-                                'truncate text-xs font-normal text-[#606060]'
+                                'truncate text-xs font-normal text-[#606060] dark:text-[#a0a0a0]'
                             }
                         >
                             junimhs10@gmail.com

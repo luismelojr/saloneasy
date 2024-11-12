@@ -95,7 +95,7 @@ export const Item = ({
                     <TooltipContent
                         side="left"
                         className="hidden px-3 py-1.5 text-xs md:flex"
-                        sideOffset={10}
+                        sideOffset={16}
                     >
                         {item.name}
                     </TooltipContent>
