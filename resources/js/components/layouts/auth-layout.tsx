@@ -44,7 +44,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                     </Link>
                 </div>
                 <div className={'-mt-20 flex h-full flex-col justify-center'}>
-                    <div className={'relative space-y-2'}>
+                    <div className={'relative space-y-2 text-center'}>
                         <h2 className={'text-3xl font-bold text-white'}>
                             Comece a gerenciar seu salão de beleza
                         </h2>
