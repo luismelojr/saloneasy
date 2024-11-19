@@ -15,6 +15,13 @@ class ServiceController extends Controller
 
     public function index(Request $request)
     {
-        return Inertia::render('Dashboard/Services/Screens/Index');
+        $sorting = $request->has('sorting') ? json_decode($request->input('sorting', [])) : [];
+        $services = $this->service->getAll($sorting);
+        return Inertia::render('Dashboard/Services/Screens/Index', [
+            'services' => $services,
+            'params' => [
+                'sorting' => $sorting
+            ]
+        ]);
     }
 }
