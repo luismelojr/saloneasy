@@ -29,12 +29,12 @@ export default function MenuMobile() {
             </SheetTrigger>
             <SheetContent
                 side={'left'}
-                className={'-ml-2 rounded-none border-none'}
+                className={'-ml-2 rounded-none border-none bg-primary'}
             >
                 <SheetTitle asChild>
                     <Link
                         href={route('login')}
-                        className="flex items-center gap-2 text-xl text-foreground"
+                        className="flex items-center gap-2 text-xl text-white"
                     >
                         <CalendarClock size={20} />
                         Saloneasy

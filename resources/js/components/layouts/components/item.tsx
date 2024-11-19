@@ -51,9 +51,9 @@ export const Item = ({
                             layoutRoot
                             className={cn(
                                 'relative flex h-[45px] items-center border border-transparent md:w-[45px] md:justify-center',
-                                'hover:border-[#DCDAD2] hover:bg-accent hover:dark:border-[#2C2C2C]',
+                                'text-white hover:rounded-md hover:border-[#DCDAD2] hover:bg-accent hover:text-primary hover:dark:border-[#2C2C2C]',
                                 isActive &&
-                                    'border-[#DCDAD2] bg-[#F2F1EF] dark:border-[#2C2C2C] dark:bg-secondary',
+                                    'rounded-md border-[#DCDAD2] bg-[#F2F1EF] text-primary dark:border-[#2C2C2C] dark:bg-secondary',
                                 isCustomizing &&
                                     'border-[#DCDAD2] bg-background dark:border-[#2C2C2C]',
                             )}
