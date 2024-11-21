@@ -1,30 +1,14 @@
+import StatusFilters from '@/components/filters/StatusFilters';
 import FiltersList from '@/components/shared/FiltersList';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuPortal,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import debounce from 'lodash/debounce';
-import { Check, ListFilter, Search } from 'lucide-react';
+import { ListFilter, Search } from 'lucide-react';
 import { useCallback, useState } from 'react';
-
-const StatusFilters = [
-    {
-        value: true,
-        label: 'Ativo',
-    },
-    {
-        value: false,
-        label: 'Inativo',
-    },
-];
 
 interface ServiceFiltersProps {
     fetchData: (params: any) => void;
@@ -190,41 +174,10 @@ export default function ServiceFilters({
                             alignOffset={-11}
                             side="bottom"
                         >
-                            <DropdownMenuGroup>
-                                <DropdownMenuSub>
-                                    <DropdownMenuSubTrigger>
-                                        <Check />
-                                        <span>Status</span>
-                                    </DropdownMenuSubTrigger>
-                                    <DropdownMenuPortal>
-                                        <DropdownMenuSubContent
-                                            sideOffset={10}
-                                            alignOffset={-4}
-                                            className="p-0"
-                                        >
-                                            {StatusFilters.map((filter) => (
-                                                <DropdownMenuCheckboxItem
-                                                    key={filter.label}
-                                                    checked={filters.some(
-                                                        (f) =>
-                                                            f.key ===
-                                                                'status' &&
-                                                            f.value ===
-                                                                filter.value,
-                                                    )}
-                                                    onCheckedChange={() =>
-                                                        handleFilterStatus(
-                                                            filter.value,
-                                                        )
-                                                    }
-                                                >
-                                                    {filter.label}
-                                                </DropdownMenuCheckboxItem>
-                                            ))}
-                                        </DropdownMenuSubContent>
-                                    </DropdownMenuPortal>
-                                </DropdownMenuSub>
-                            </DropdownMenuGroup>
+                            <StatusFilters
+                                filters={filters}
+                                handleFilterStatus={handleFilterStatus}
+                            />
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
