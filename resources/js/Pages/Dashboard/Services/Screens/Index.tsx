@@ -8,12 +8,13 @@ import { useState } from 'react';
 
 interface ServiceProps {
     services: ServiceAndPaginationInterface;
-    params: any;
+    query: any;
 }
-export default function Index({ services, params }: ServiceProps) {
+export default function Index({ services, query }: ServiceProps) {
     const [loading, setLoading] = useState(false);
     const handleFetchData = (params: any) => {
         const sorting = JSON.stringify(params?.sorting);
+        delete params?.sorting;
         router.get(
             route('services.index', [{ ...params, sorting: sorting }]),
             {
@@ -36,7 +37,7 @@ export default function Index({ services, params }: ServiceProps) {
                     'flex w-full flex-col items-start justify-between md:flex-row md:items-center'
                 }
             >
-                <ServiceFilters />
+                <ServiceFilters fetchData={handleFetchData} params={query} />
                 <div className={'hidden md:block'}>botoes de cadastros</div>
             </div>
             <div className={'mt-4'}>
@@ -44,7 +45,7 @@ export default function Index({ services, params }: ServiceProps) {
                     columns={columns}
                     data={services.data}
                     fetchData={handleFetchData}
-                    initialSorting={params.sorting}
+                    initialSorting={query?.sorting || []}
                     isLoading={loading}
                     currentPage={services.current_page}
                     lastPage={services.last_page}

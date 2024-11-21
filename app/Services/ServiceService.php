@@ -10,9 +10,9 @@ class ServiceService
         private readonly Service $model
     ){}
 
-    public function getAll(array $sorting)
+    public function getAll(array $sorting, array $query)
     {
         $user = auth()->user();
-        return $user->services()->sorting($sorting)->paginate(10);
+        return $user->services()->sorting($sorting)->filter($query)->paginate(10);
     }
 }

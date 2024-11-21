@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\FilterTrait;
 use App\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ class Service extends Model
 {
     use HasFactory;
     use SortableTrait;
+    use FilterTrait;
 
     protected $fillable = [
         'name',

@@ -1,3 +1,4 @@
+import FiltersList from '@/components/shared/FiltersList';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -25,11 +26,34 @@ const StatusFilters = [
     },
 ];
 
-export default function ServiceFilters() {
+interface ServiceFiltersProps {
+    fetchData: (params: any) => void;
+    params: any;
+}
+
+export default function ServiceFilters({
+    fetchData,
+    params,
+}: ServiceFiltersProps) {
     const [filters, setFilters] = useState<
         { key: string; value: string | boolean; legend: string }[]
-    >([]);
-    const [search, setSearch] = useState('');
+    >(
+        Object.keys(params).map((key) => {
+            if (key === 'status') {
+                return {
+                    key: key,
+                    value: params[key] === 'Ativo',
+                    legend: params[key],
+                };
+            }
+            return {
+                key: key,
+                value: params[key],
+                legend: params[key],
+            };
+        }),
+    );
+    const [search, setSearch] = useState(params?.search || '');
 
     const handleFilterStatus = (value: boolean) => {
         const data = {
@@ -46,13 +70,12 @@ export default function ServiceFilters() {
         setSearch(value);
 
         if (value.length === 0) {
-            const filterFind = filters.find(
-                (filter) => filter.key === 'search',
+            // Remove o filtro de busca
+            const filtersNewValue = filters.filter(
+                (item) => item.key !== 'search',
             );
-            setFilters((prev) =>
-                prev.filter((filter) => filter !== filterFind),
-            );
-
+            setFilters(filtersNewValue);
+            handleFetchData(filtersNewValue);
             return;
         }
 
@@ -62,9 +85,8 @@ export default function ServiceFilters() {
             legend: value,
         };
 
-        if (value.length > 0) {
-            handleDebounceSearch(data);
-        }
+        // Chama o debounce apenas se houver um valor no input
+        handleDebounceSearch(data, value);
     };
 
     const removeAndAddFilterArray = (data: {
@@ -72,33 +94,61 @@ export default function ServiceFilters() {
         value: string | boolean;
         legend: string;
     }) => {
-        // Verificar se existe key status no array filters se exister apagar
-        if (filters.some((filter) => filter.key === data.key)) {
-            setFilters((prev) =>
-                prev.filter((filter) => filter.key !== data.key),
+        setFilters((prev) => {
+            const updatedFilters = prev.filter(
+                (filter) => filter.key !== data.key,
             );
-        }
+            const newFilters = [...updatedFilters, data];
 
-        setFilters((prev) => [...prev, data]);
+            handleFetchData(newFilters); // Passa os filtros atualizados para a função
+            return newFilters;
+        });
     };
 
     const handleDebounceSearch = useCallback(
         debounce(
-            (data: {
-                key: string;
-                value: string | boolean;
-                legend: string;
-            }) => {
-                setFilters((prev) =>
-                    prev.filter((filter) => filter.key !== data.key),
-                );
+            (
+                data: {
+                    key: string;
+                    value: string | boolean;
+                    legend: string;
+                },
+                value: string,
+            ) => {
+                if (value.length === 0) return;
 
-                setFilters((prev) => [...prev, data]);
+                setFilters((prev) => {
+                    const updatedFilters = prev.filter(
+                        (filter) => filter.key !== data.key,
+                    );
+                    const newFilters = [...updatedFilters, data];
+
+                    handleFetchData(newFilters); // Passa os filtros atualizados para a função
+                    return newFilters;
+                });
             },
             1000,
         ),
         [],
     );
+
+    const removeFilter = (key: string) => {
+        setFilters((prev) => {
+            const updatedFilters = prev.filter((item) => item.key !== key);
+            handleFetchData(updatedFilters); // Passa os filtros atualizados para a função
+            return updatedFilters;
+        });
+    };
+
+    const handleFetchData = (updatedFilters: any[]) => {
+        const params = updatedFilters.reduce((acc, filter) => {
+            acc[filter.key] = filter.legend;
+            return acc;
+        }, {});
+
+        fetchData(params);
+    };
+
     return (
         <div
             className={
@@ -180,13 +230,7 @@ export default function ServiceFilters() {
                 </div>
             </div>
             <div>
-                {filters.map((filter) => (
-                    <div key={filter.key} className={'flex items-center gap-2'}>
-                        <span>
-                            {filter.key} : {filter.legend}
-                        </span>
-                    </div>
-                ))}
+                <FiltersList data={filters} remover={removeFilter} />
             </div>
         </div>
     );
