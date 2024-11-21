@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
     total: number;
     from: number;
     to: number;
+    params: any;
 }
 export default function DataTable<TData, TValue>({
     columns,
@@ -51,6 +52,7 @@ export default function DataTable<TData, TValue>({
     total,
     from,
     to,
+    params,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>(initialSorting);
     const [page, setPage] = useState(currentPage || 1);
@@ -62,6 +64,7 @@ export default function DataTable<TData, TValue>({
         onSortingChange: (newSorting) => {
             const newSortValue = functionalUpdate(newSorting, sorting);
             fetchData({
+                ...params,
                 sorting: newSortValue,
             });
             setSorting(newSorting);
@@ -75,6 +78,7 @@ export default function DataTable<TData, TValue>({
     const handlePagination = (pagination: number) => {
         setPage(pagination);
         fetchData({
+            ...params,
             sorting: sorting,
             page: pagination,
         });
@@ -84,7 +88,7 @@ export default function DataTable<TData, TValue>({
         const newPage = type === 'next' ? page + 1 : Math.max(page - 1, 1);
 
         setPage(newPage);
-        fetchData({ sorting, page: newPage });
+        fetchData({ ...params, sorting, page: newPage });
     };
 
     return (

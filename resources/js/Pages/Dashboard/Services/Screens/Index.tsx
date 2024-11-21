@@ -52,6 +52,7 @@ export default function Index({ services, query }: ServiceProps) {
                     total={services.total}
                     from={services.from}
                     to={services.to}
+                    params={query}
                 />
             </div>
         </DashboardLayout>
