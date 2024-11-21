@@ -1,6 +1,7 @@
 import DashboardLayout from '@/components/layouts/dashboard-layout';
 import DataTable from '@/components/shared/DataTable';
 import { columns } from '@/Pages/Dashboard/Services/Tables/ServiceColumns';
+import ServiceFilters from '@/Pages/Dashboard/Services/Tables/ServicesFilters';
 import { ServiceAndPaginationInterface } from '@/Pages/Dashboard/Services/Types';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
@@ -30,8 +31,15 @@ export default function Index({ services, params }: ServiceProps) {
     };
     return (
         <DashboardLayout title={'Serviços'}>
-            <h1>Servicos sdsd</h1>
-            <div className={'mt-10'}>
+            <div
+                className={
+                    'flex w-full flex-col items-start justify-between md:flex-row md:items-center'
+                }
+            >
+                <ServiceFilters />
+                <div className={'hidden md:block'}>botoes de cadastros</div>
+            </div>
+            <div className={'mt-4'}>
                 <DataTable
                     columns={columns}
                     data={services.data}

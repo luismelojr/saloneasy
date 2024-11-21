@@ -25,7 +25,7 @@ export const columns: ColumnDef<ServiceInterface>[] = [
                         column.toggleSorting(column.getIsSorted() === 'asc');
                     }}
                 >
-                    <span>Nome</span>
+                    <span>ID</span>
                     {/*<ArrowUpDown className="ml-2 h-4 w-4" />*/}
                     {column.getIsSorted() ? (
                         column.getIsSorted() === 'asc' ? (
@@ -65,6 +65,51 @@ export const columns: ColumnDef<ServiceInterface>[] = [
                         <ArrowUpDown className="h-4 w-4" />
                     )}
                 </Button>
+            );
+        },
+    },
+    {
+        accessorKey: 'price',
+        header: 'Preço',
+        cell: ({ row }) => {
+            const formattedPrice = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            }).format(row.original.price);
+
+            return (
+                <div className={'text-left font-medium'}>{formattedPrice}</div>
+            );
+        },
+    },
+    {
+        accessorKey: 'duration',
+        header: 'Duração',
+        cell: ({ row }) => {
+            const isMinutesOrMinute =
+                row.original.duration === 1 ? 'minuto' : 'minutos';
+
+            return (
+                <div className={'text-left font-medium'}>
+                    {row.original.duration} {isMinutesOrMinute}
+                </div>
+            );
+        },
+    },
+    {
+        accessorKey: 'is_active',
+        header: 'Status',
+        cell: ({ row }) => {
+            return (
+                <div
+                    className={`text-left font-medium ${
+                        row.original.is_active
+                            ? 'text-green-500'
+                            : 'text-red-500'
+                    }`}
+                >
+                    {row.original.is_active ? 'Ativo' : 'Inativo'}
+                </div>
             );
         },
     },

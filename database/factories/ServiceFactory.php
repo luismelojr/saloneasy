@@ -17,7 +17,7 @@ class ServiceFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::find(10);
+        $user = User::find(1);
 
         return [
             'name' => $this->faker->name,

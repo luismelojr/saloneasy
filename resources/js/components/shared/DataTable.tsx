@@ -89,7 +89,6 @@ export default function DataTable<TData, TValue>({
 
     return (
         <div>
-            {currentPage} - {lastPage} - {total} - {from}
             <div className={'relative rounded-md border'}>
                 {isLoading && (
                     <div className="absolute inset-0 z-10 flex items-center justify-center bg-white bg-opacity-70">
@@ -148,86 +147,90 @@ export default function DataTable<TData, TValue>({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    Nem um registro encontrado
                                 </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-between space-x-2 py-4">
-                <div className="hidden sm:block">
-                    <p className="flex items-center gap-1 text-sm text-gray-700">
-                        Mostrando
-                        <span className="font-medium">{from}</span>a
-                        <span className="font-medium">{to}</span>
-                        de
-                        <span className="font-medium">{total}</span>
-                        resultados
-                    </p>
-                </div>
-                <Pagination>
-                    <PaginationContent>
-                        {/* Botão para página anterior */}
-                        <PaginationItem>
-                            <PaginationPrevious
-                                href="#"
-                                onClick={() =>
-                                    handlePaginationNextOrPrevious('previous')
-                                }
-                            />
-                        </PaginationItem>
-
-                        {/* Páginas dinâmicas */}
-                        {Array.from({ length: lastPage }, (_, i) => i + 1)
-                            .filter((item) => {
-                                // Exibe 1 e 2 se estiver na página 1
-                                if (page === 1) return item <= 3;
-                                // Exibe anterior, atual e próximo se não for a última
-                                if (page > 1 && page < lastPage)
-                                    return Math.abs(item - page) <= 1;
-                                // Exibe últimas 3 páginas se estiver na última
-                                if (page === lastPage)
-                                    return item >= lastPage - 2;
-                                return false;
-                            })
-                            .map((item) => (
-                                <PaginationItem key={item}>
-                                    <PaginationLink asChild>
-                                        <Button
-                                            variant={
-                                                item === page
-                                                    ? 'default'
-                                                    : 'outline'
-                                            }
-                                            onClick={() =>
-                                                handlePagination(item)
-                                            }
-                                        >
-                                            {item}
-                                        </Button>
-                                    </PaginationLink>
-                                </PaginationItem>
-                            ))}
-
-                        {/* Adiciona pontos quando necessário */}
-                        {page < lastPage - 2 && (
+            {data.length > 0 && (
+                <div className="flex items-center justify-between space-x-2 py-4">
+                    <div className="hidden sm:block">
+                        <p className="flex items-center gap-1 text-sm text-gray-700">
+                            Mostrando
+                            <span className="font-medium">{from}</span>a
+                            <span className="font-medium">{to}</span>
+                            de
+                            <span className="font-medium">{total}</span>
+                            resultados
+                        </p>
+                    </div>
+                    <Pagination>
+                        <PaginationContent>
+                            {/* Botão para página anterior */}
                             <PaginationItem>
-                                <PaginationEllipsis />
+                                <PaginationPrevious
+                                    href="#"
+                                    onClick={() =>
+                                        handlePaginationNextOrPrevious(
+                                            'previous',
+                                        )
+                                    }
+                                />
                             </PaginationItem>
-                        )}
 
-                        {/* Botão para próxima página */}
-                        <PaginationItem>
-                            <PaginationNext
-                                onClick={() =>
-                                    handlePaginationNextOrPrevious('next')
-                                }
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
-            </div>
+                            {/* Páginas dinâmicas */}
+                            {Array.from({ length: lastPage }, (_, i) => i + 1)
+                                .filter((item) => {
+                                    // Exibe 1 e 2 se estiver na página 1
+                                    if (page === 1) return item <= 3;
+                                    // Exibe anterior, atual e próximo se não for a última
+                                    if (page > 1 && page < lastPage)
+                                        return Math.abs(item - page) <= 1;
+                                    // Exibe últimas 3 páginas se estiver na última
+                                    if (page === lastPage)
+                                        return item >= lastPage - 2;
+                                    return false;
+                                })
+                                .map((item) => (
+                                    <PaginationItem key={item}>
+                                        <PaginationLink asChild>
+                                            <Button
+                                                variant={
+                                                    item === page
+                                                        ? 'default'
+                                                        : 'outline'
+                                                }
+                                                onClick={() =>
+                                                    handlePagination(item)
+                                                }
+                                            >
+                                                {item}
+                                            </Button>
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                ))}
+
+                            {/* Adiciona pontos quando necessário */}
+                            {page < lastPage - 2 && (
+                                <PaginationItem>
+                                    <PaginationEllipsis />
+                                </PaginationItem>
+                            )}
+
+                            {/* Botão para próxima página */}
+                            <PaginationItem>
+                                <PaginationNext
+                                    onClick={() =>
+                                        handlePaginationNextOrPrevious('next')
+                                    }
+                                />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </div>
+            )}
         </div>
     );
 }
