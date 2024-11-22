@@ -5,8 +5,10 @@ import CardTitleShared from '@/components/shared/CardTitleShared';
 import FileUpload from '@/components/shared/FileUpload';
 import { Button } from '@/components/ui/button';
 import ButtonAction from '@/components/ui/button-action';
+import { Label } from '@/components/ui/label';
 import TextInput from '@/components/ui/text-input';
 import { ServiceFormInterface } from '@/types/forms';
+import { ServiceGlobalInterface } from '@/types/interfaces';
 import { useForm } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { CurrencyInput } from 'react-currency-mask';
@@ -17,16 +19,20 @@ const menus = [
         link: route('services.index'),
         active: false,
     },
-    { label: 'Cadastrar', link: '', active: true },
+    { label: 'Editar', link: '', active: true },
 ];
 
-export default function Create() {
+interface ShowProps {
+    service: ServiceGlobalInterface;
+}
+
+export default function Edit({ service }: ShowProps) {
     const form = useForm<ServiceFormInterface>({
-        name: '',
-        description: '',
+        name: service.name,
+        description: service.description,
         image: null,
-        price: '',
-        duration: '',
+        price: service.price,
+        duration: service.duration,
     });
 
     const handleChangeFile = (file: File) => {
@@ -35,18 +41,17 @@ export default function Create() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        form.post(route('services.store'), {
+        form.put(route('services.update', service.id), {
             preserveScroll: true,
-            onSuccess: () => form.reset(),
         });
     };
     return (
         <DashboardLayout menus={menus}>
             <CardShared>
                 <CardTitleShared
-                    title={'Criar serviço'}
+                    title={'Editar serviço'}
                     description={
-                        'Preencha os campos abaixo para criar um novo serviço.'
+                        'Preencha os campos abaixo para editar o serviço.'
                     }
                 >
                     <ButtonAction
@@ -114,13 +119,25 @@ export default function Create() {
                                 }
                             />
                         </div>
-                        <div className={'w-full'}>
+                        <div className={'flex w-full flex-col gap-6'}>
+                            {service.image_url && (
+                                <div className={'flex flex-col gap-2'}>
+                                    <Label>Imagem atual</Label>
+                                    <img
+                                        src={service.image_url}
+                                        alt={service.name}
+                                        className={
+                                            'h-auto max-h-[300px] w-full max-w-[300px] rounded-md border object-contain'
+                                        }
+                                    />
+                                </div>
+                            )}
                             <FileUpload onFileUpload={handleChangeFile} />
                         </div>
                         <div className={'flex w-full justify-end'}>
                             <Button type="submit" loading={form.processing}>
                                 <Plus className="mr-2 h-4 w-4" />
-                                Cadastrar
+                                Editar
                             </Button>
                         </div>
                     </form>

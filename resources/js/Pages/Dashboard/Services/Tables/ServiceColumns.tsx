@@ -1,15 +1,17 @@
+import DeleteDialogShared from '@/components/shared/DeleteDialogShared';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ServiceInterface } from '@/Pages/Dashboard/Services/Types';
+import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { useState } from 'react';
 
 export const columns: ColumnDef<ServiceInterface>[] = [
     {
@@ -117,34 +119,55 @@ export const columns: ColumnDef<ServiceInterface>[] = [
         id: 'actions',
         cell: ({ row }) => {
             const service = row.original;
+            const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+            const handleDelete = () => {
+                router.delete(route('services.destroy', service.id));
+            };
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() =>
-                                alert(`Copy payment ID: ${service.id}`)
-                            }
-                            className={'cursor-pointer'}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className={'cursor-pointer'}>
-                            View customer
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className={'cursor-pointer'}>
-                            View payment details
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                                asChild
+                                className={'cursor-pointer'}
+                            >
+                                <Link href={route('services.show', service.id)}>
+                                    Visualizar
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                asChild
+                                className={'cursor-pointer'}
+                            >
+                                <Link href={route('services.edit', service.id)}>
+                                    Editar
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                className={'cursor-pointer'}
+                                onClick={() => setIsDialogOpen(true)}
+                            >
+                                Deletar
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <DeleteDialogShared
+                        title={'Deletar serviço'}
+                        description={`Você tem certeza que deseja deletar o serviço com o id ${service.id}?`}
+                        isOpen={isDialogOpen}
+                        onClose={() => setIsDialogOpen(false)}
+                        onDelete={handleDelete}
+                    />
+                </>
             );
         },
     },
