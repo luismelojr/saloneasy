@@ -1,6 +1,7 @@
 import HeaderNavigation from '@/components/layouts/components/header-navigation';
 import Sidebar from '@/components/layouts/components/sidebar';
 import BreadcrumbCustom from '@/components/shared/BreadcrumbCustom';
+import Toast from '@/components/ui/toast';
 
 interface DashboardLayoutProps {
     title: string;
@@ -41,6 +42,7 @@ export default function DashboardLayout({
                     </div>
                 </div>
             </div>
+            <Toast />
         </div>
     );
 }
