@@ -32,4 +32,15 @@ class Service extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Getters and Setters
+    public function setPriceAttribute($value)
+    {
+        $this->attributes['price'] = $value * 100;
+    }
+
+    public function getPriceAttribute($value)
+    {
+        return $value / 100;
+    }
 }

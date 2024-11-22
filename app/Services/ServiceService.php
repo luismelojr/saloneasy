@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Service;
+use Illuminate\Support\Facades\DB;
 
 class ServiceService
 {
@@ -14,5 +15,22 @@ class ServiceService
     {
         $user = auth()->user();
         return $user->services()->sorting($sorting)->filter($query)->paginate(10);
+    }
+
+    public function create(array $data)
+    {
+        try {
+         DB::beginTransaction();
+            if (isset($data['image'])) {
+                $data['image_url'] = $data['image']->store('services', 'public');
+            }
+            $user = auth()->user();
+            $service = $user->services()->create($data);
+
+            DB::commit();
+            return $service;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }
