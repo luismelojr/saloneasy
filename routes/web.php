@@ -3,8 +3,8 @@
 use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ScheduleController;
+use App\Http\Controllers\Dashboard\ScheduleExclusionController;
 use App\Http\Controllers\Dashboard\ServiceController;
-use App\Http\Controllers\LandingPage\CheckoutController;
 use App\Http\Controllers\LandingPage\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +27,11 @@ Route::middleware(['auth'])->group(function () {
     // Hours Schedules
     Route::get('hours-schedules', [ScheduleController::class, 'show'])->name('hours.schedules.show');
     Route::put('hours-schedules', [ScheduleController::class, 'update'])->name('hours.schedules.update');
+
+    // Hours Schedules Exclusions
+    Route::get('hours-schedules/exclusions', [ScheduleExclusionController::class, 'index'])->name('hours.schedules.exclusions.index');
+    Route::get('hours-schedules/exclusions/create', [ScheduleExclusionController::class, 'create'])->name('hours.schedules.exclusions.create');
+    Route::post('hours-schedules/exclusions', [ScheduleExclusionController::class, 'store'])->name('hours.schedules.exclusions.store');
 });
 
 require __DIR__.'/auth.php';

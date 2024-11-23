@@ -86,6 +86,19 @@ export interface ClientAndPaginationInterface {
     meta: MetaInterface;
 }
 
+export interface ScheduleExclusionInterface {
+    id: number;
+    date: string;
+    starts_at: string;
+    ends_at: string;
+    reason: string;
+}
+
+export interface ScheduleExclusionAndPaginationInterface {
+    data: ScheduleExclusionInterface[];
+    meta: MetaInterface;
+}
+
 export interface DayProps {
     title: string;
     start: string;

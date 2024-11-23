@@ -11,3 +11,10 @@ export interface ClientFormInterface {
     phone: string;
     birth_date: string | Date;
 }
+
+export interface ScheduleExclusionFormInterface {
+    date: Date;
+    starts_at: string;
+    ends_at: string;
+    reason: string;
+}

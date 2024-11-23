@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function schedulesExclusions(): HasMany
+    {
+        return $this->hasMany(ScheduleExclusion::class);
+    }
 }

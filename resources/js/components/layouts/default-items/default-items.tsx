@@ -1,6 +1,7 @@
 import {
     BaggageClaim,
     CalendarClock,
+    CalendarOff,
     LayoutDashboard,
     Users,
 } from 'lucide-react';
@@ -30,6 +31,12 @@ export const defaultItems = [
         path: '/hours-schedules',
         routeActive: ['hours.schedules.show'],
     },
+    {
+        route: 'hours.schedules.exclusions.index',
+        name: 'Horários que não atendemos',
+        path: '/hours-schedules/exclusions',
+        routeActive: ['hours.schedules.exclusions.index'],
+    },
 ];
 
 export const icons: Record<string, any> = {
@@ -37,4 +44,5 @@ export const icons: Record<string, any> = {
     '/services': () => <BaggageClaim size={20} />,
     '/clients': () => <Users size={20} />,
     '/hours-schedules': () => <CalendarClock size={20} />,
+    '/hours-schedules/exclusions': () => <CalendarOff size={20} />,
 };
