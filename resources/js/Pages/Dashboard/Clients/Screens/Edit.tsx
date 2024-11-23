@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import ButtonAction from '@/components/ui/button-action';
 import TextInput from '@/components/ui/text-input';
 import TextMask from '@/components/ui/text-mask';
-import { ClientInterface } from '@/Pages/Dashboard/Services/Types';
+import { ClientInterface } from '@/types';
 import { ClientFormInterface } from '@/types/forms';
 import { useForm } from '@inertiajs/react';
 import { Plus } from 'lucide-react';

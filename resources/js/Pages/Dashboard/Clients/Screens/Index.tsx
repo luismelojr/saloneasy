@@ -6,7 +6,7 @@ import DataTable from '@/components/shared/DataTable';
 import ButtonAction from '@/components/ui/button-action';
 import { columns } from '@/Pages/Dashboard/Clients/Tables/Columns';
 import Filters from '@/Pages/Dashboard/Clients/Tables/Filters';
-import { ClientAndPaginationInterface } from '@/Pages/Dashboard/Services/Types';
+import { ClientAndPaginationInterface } from '@/types';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 

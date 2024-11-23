@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Client;
+use App\Models\Schedule;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('show-clients', function (User $user, Client $client) {
             // Verificar se o client esta vinculado ao usuario relacao N:N
             return $user->clients->contains($client);
+        });
+
+        Gate::define('management-schedule', function (User $user, Schedule $schedule) {
+            return $user->id === $schedule->user_id;
         });
 
         JsonResource::withoutWrapping();

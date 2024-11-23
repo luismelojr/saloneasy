@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ScheduleController;
 use App\Http\Controllers\Dashboard\ServiceController;
 use App\Http\Controllers\LandingPage\CheckoutController;
 use App\Http\Controllers\LandingPage\HomeController;
@@ -22,6 +23,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Clients
     Route::resource('clients', ClientController::class);
+
+    // Hours Schedules
+    Route::get('hours-schedules', [ScheduleController::class, 'show'])->name('hours.schedules.show');
+    Route::put('hours-schedules', [ScheduleController::class, 'update'])->name('hours.schedules.update');
 });
 
 require __DIR__.'/auth.php';

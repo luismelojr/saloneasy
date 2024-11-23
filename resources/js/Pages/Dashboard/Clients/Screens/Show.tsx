@@ -3,7 +3,7 @@ import CardShared from '@/components/shared/Card';
 import CardContentShared from '@/components/shared/CardContentShared';
 import CardTitleShared from '@/components/shared/CardTitleShared';
 import ButtonAction from '@/components/ui/button-action';
-import { ClientInterface } from '@/Pages/Dashboard/Services/Types';
+import { ClientInterface } from '@/types';
 
 const menus = [
     {
