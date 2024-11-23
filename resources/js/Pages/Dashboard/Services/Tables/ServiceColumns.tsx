@@ -148,6 +148,20 @@ export const columns: ColumnDef<ServiceInterface>[] = [
                                 asChild
                                 className={'cursor-pointer'}
                             >
+                                <Link
+                                    href={route(
+                                        'services.update.status',
+                                        service.id,
+                                    )}
+                                    method={'patch'}
+                                >
+                                    {service.is_active ? 'Desativar' : 'Ativar'}
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                asChild
+                                className={'cursor-pointer'}
+                            >
                                 <Link href={route('services.edit', service.id)}>
                                     Editar
                                 </Link>

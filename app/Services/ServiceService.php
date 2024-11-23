@@ -41,6 +41,9 @@ class ServiceService
             DB::beginTransaction();
             if (isset($data['image'])) {
                 $data['image_url'] = $data['image']->store('services', 'public');
+                if ($service->image_url) {
+                    Storage::disk('public')->delete($service->image_url);
+                }
             }
             $service->update($data);
 
@@ -60,6 +63,18 @@ class ServiceService
             }
             $service->delete();
             DB::commit();
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    public function updateStatus(Service $service)
+    {
+        try {
+            DB::beginTransaction();
+            $service->update(['is_active' => !$service->is_active]);
+            DB::commit();
+            return $service;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

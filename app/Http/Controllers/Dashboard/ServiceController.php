@@ -85,4 +85,15 @@ class ServiceController extends Controller
 
         return redirect()->route('services.index')->toast('Serviço deletado com sucesso!');
     }
+
+    public function updateStatus(Service $service)
+    {
+        if (!Gate::allows('show-services', $service)) {
+            return redirect()->route('services.index')->toast('Você não tem permissão para acessar este serviço.', 'error');
+        }
+
+        $this->service->updateStatus($service);
+
+        return redirect()->route('services.index')->toast('Status do serviço atualizado com sucesso!');
+    }
 }

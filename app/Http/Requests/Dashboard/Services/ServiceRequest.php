@@ -26,7 +26,7 @@ class ServiceRequest extends FormRequest
             'description' => ['required', 'string'],
             'duration' => ['required', 'numeric'],
             'price' => ['required', 'numeric'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'image' => ['nullable'],
         ];
     }
 }

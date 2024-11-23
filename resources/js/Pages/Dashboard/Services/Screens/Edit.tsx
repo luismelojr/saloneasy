@@ -35,14 +35,33 @@ export default function Edit({ service }: ShowProps) {
         duration: service.duration,
     });
 
+    const options = [
+        { value: 'One', label: 'One' },
+        { value: 'Two', label: 'Two' },
+        { value: 'Three', label: 'Three' },
+        { value: 'Four', label: 'Four' },
+        { value: 'Five', label: 'Five' },
+        { value: 'Six', label: 'Six' },
+        { value: 'Seven', label: 'Seven' },
+        { value: 'Eight', label: 'Eight' },
+        { value: 'Nine', label: 'Nine' },
+        { value: 'Ten', label: 'Ten' },
+        { value: 'Eleven', label: 'Eleven' },
+        { value: 'Twelve', label: 'Twelve' },
+        { value: 'Thirteen', label: 'Thirteen' },
+        { value: 'Fifteen', label: 'Fifteen' },
+    ];
+
     const handleChangeFile = (file: File) => {
         form.setData('image', file);
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        form.put(route('services.update', service.id), {
+        form.post(route('services.update', service.id), {
             preserveScroll: true,
+            method: 'post',
+            forceFormData: true,
         });
     };
     return (
@@ -61,7 +80,11 @@ export default function Edit({ service }: ShowProps) {
                     />
                 </CardTitleShared>
                 <CardContentShared>
-                    <form className={'space-y-6'} onSubmit={handleSubmit}>
+                    <form
+                        className={'space-y-6'}
+                        onSubmit={handleSubmit}
+                        encType={'multipart/form-data'}
+                    >
                         <div
                             className={
                                 'grid grid-cols-1 items-start gap-6 md:grid-cols-2'
@@ -141,6 +164,7 @@ export default function Edit({ service }: ShowProps) {
                             </Button>
                         </div>
                     </form>
+                    <div className={'mt-10'}></div>
                 </CardContentShared>
             </CardShared>
         </DashboardLayout>

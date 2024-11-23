@@ -15,7 +15,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     // Services
-    Route::resource('services', ServiceController::class);
+    Route::resource('services', ServiceController::class)->except(['update']);
+    Route::post('services/{service}/update', [ServiceController::class, 'update'])->name('services.update');
+    Route::patch('services/{service}/status', [ServiceController::class, 'updateStatus'])->name('services.update.status');
 });
 
 require __DIR__.'/auth.php';
