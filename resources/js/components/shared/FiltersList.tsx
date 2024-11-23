@@ -33,6 +33,19 @@ export default function FiltersList({ data, remover }: FiltersListProps) {
         return key !== 'preserveState' && key !== 'page' && key !== 'sorting';
     };
 
+    const formattedFiltersName = (key: string) => {
+        switch (key) {
+            case 'search':
+                return 'Busca';
+            case 'status':
+                return 'Status';
+            case 'created_at':
+                return 'Criado em';
+            default:
+                return key;
+        }
+    };
+
     return (
         <motion.ul
             variants={listVariants}
@@ -50,7 +63,9 @@ export default function FiltersList({ data, remover }: FiltersListProps) {
                             >
                                 <X className="!w-0 scale-0 transition-all group-hover:!w-4 group-hover:scale-100" />
                                 <span>
-                                    <b className={'capitalize'}>{filter.key}</b>{' '}
+                                    <b className={'capitalize'}>
+                                        {formattedFiltersName(filter.key)}
+                                    </b>{' '}
                                     : {filter.legend}
                                 </span>
                             </Button>

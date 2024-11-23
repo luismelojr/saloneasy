@@ -9,7 +9,7 @@ trait SortableTrait
     public function scopeSorting(Builder $query, array $sorting)
     {
         foreach ($sorting as $sort) {
-            if ($this->isSortable($sort['id']) || $sort['id'] === 'id') {
+            if ($this->isSortable($sort['id']) || $sort['id'] === 'id' || $sort['id'] === 'created_at') {
                 $query->orderBy($sort['id'], $sort['desc'] ? 'desc' : 'asc');
             }
         }

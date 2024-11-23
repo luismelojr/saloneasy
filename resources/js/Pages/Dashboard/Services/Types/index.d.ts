@@ -19,3 +19,26 @@ export interface ServiceAndPaginationInterface {
     from: number;
     to: number;
 }
+
+export interface ClientInterface {
+    id: number;
+    name: string;
+    phone: string;
+    birth_date: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface MetaInterface {
+    current_page: number;
+    from: number;
+    last_page: number;
+    per_page: number;
+    to: number;
+    total: number;
+}
+
+export interface ClientAndPaginationInterface {
+    data: ClientInterface[];
+    meta: MetaInterface;
+}

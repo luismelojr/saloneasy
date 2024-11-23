@@ -31,6 +31,7 @@ class ServiceService
             DB::commit();
             return $service;
         } catch (\Exception $e) {
+            DB::rollBack();
             throw new \Exception($e->getMessage());
         }
     }
@@ -50,6 +51,7 @@ class ServiceService
             DB::commit();
             return $service;
         } catch (\Exception $e) {
+            DB::rollBack();
             throw new \Exception($e->getMessage());
         }
     }
@@ -64,6 +66,7 @@ class ServiceService
             $service->delete();
             DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             throw new \Exception($e->getMessage());
         }
     }
@@ -76,6 +79,7 @@ class ServiceService
             DB::commit();
             return $service;
         } catch (\Exception $e) {
+            DB::rollBack();
             throw new \Exception($e->getMessage());
         }
     }

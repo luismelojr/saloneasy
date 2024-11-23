@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ServiceController;
 use App\Http\Controllers\LandingPage\CheckoutController;
@@ -18,6 +19,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('services', ServiceController::class)->except(['update']);
     Route::post('services/{service}/update', [ServiceController::class, 'update'])->name('services.update');
     Route::patch('services/{service}/status', [ServiceController::class, 'updateStatus'])->name('services.update.status');
+
+    // Clients
+    Route::resource('clients', ClientController::class);
 });
 
 require __DIR__.'/auth.php';

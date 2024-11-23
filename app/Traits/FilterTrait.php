@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 trait FilterTrait
@@ -45,6 +46,16 @@ trait FilterTrait
                     }
                 });
             }
+            // Caso o filtro seja uma data
+            if ($this->isDate($value)) {
+                $dateFormatted = Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d');
+                $query->whereDate($key, $dateFormatted);
+            }
         }
+    }
+
+    private function isDate(string $string): bool {
+        $date = \DateTime::createFromFormat('d/m/Y', $string);
+        return $date && $date->format('d/m/Y') === $string;
     }
 }

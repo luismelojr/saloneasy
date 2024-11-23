@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Service::class);
     }
+
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class, 'client_user');
+    }
 }

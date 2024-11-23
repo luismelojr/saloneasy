@@ -5,3 +5,9 @@ export interface ServiceFormInterface {
     price: string | number;
     duration: number | string;
 }
+
+export interface ClientFormInterface {
+    name: string;
+    phone: string;
+    birth_date: string | Date;
+}

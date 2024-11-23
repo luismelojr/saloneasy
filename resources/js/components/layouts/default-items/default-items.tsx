@@ -1,4 +1,4 @@
-import { BaggageClaim, LayoutDashboard } from 'lucide-react';
+import { BaggageClaim, LayoutDashboard, Users } from 'lucide-react';
 
 export const defaultItems = [
     {
@@ -13,9 +13,16 @@ export const defaultItems = [
         path: '/services',
         routeActive: ['services.*'],
     },
+    {
+        route: 'clients.index',
+        name: 'Clientes',
+        path: '/clients',
+        routeActive: ['clients.*'],
+    },
 ];
 
 export const icons: Record<string, any> = {
-    '/dashboard': () => <LayoutDashboard size={22} />,
-    '/services': () => <BaggageClaim size={22} />,
+    '/dashboard': () => <LayoutDashboard size={20} />,
+    '/services': () => <BaggageClaim size={20} />,
+    '/clients': () => <Users size={20} />,
 };

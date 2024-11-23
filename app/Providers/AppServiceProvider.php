@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Client;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('show-services', function (User $user, Service $service) {
             return $user->id === $service->user_id;
+        });
+
+        Gate::define('show-clients', function (User $user, Client $client) {
+            // Verificar se o client esta vinculado ao usuario relacao N:N
+            return $user->clients->contains($client);
         });
 
         JsonResource::withoutWrapping();
