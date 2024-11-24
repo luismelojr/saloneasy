@@ -16,6 +16,11 @@ export default function UserMenu() {
                 <Avatar
                     className={'h-8 w-8 cursor-pointer border outline-none'}
                 >
+                    {/*<AvatarImage*/}
+                    {/*    src={*/}
+                    {/*        'http://saloneasy.test/storage/avatars/JD0jnyNSI7p8quvDzOUwcTObRN1gSMMwELh1Wl7d.jpg'*/}
+                    {/*    }*/}
+                    {/*/>*/}
                     <AvatarFallback>
                         <span className="text-xs text-foreground">LH</span>
                     </AvatarFallback>
