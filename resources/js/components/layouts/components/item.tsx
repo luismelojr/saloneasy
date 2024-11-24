@@ -55,7 +55,7 @@ export const Item = ({
                                 isActive &&
                                     'rounded-md border-[#DCDAD2] bg-[#F2F1EF] text-primary dark:border-[#2C2C2C] dark:bg-secondary',
                                 isCustomizing &&
-                                    'border-[#DCDAD2] bg-background dark:border-[#2C2C2C]',
+                                    'rounded-md border-[#DCDAD2] bg-background text-primary dark:border-[#2C2C2C]',
                             )}
                         >
                             <motion.div

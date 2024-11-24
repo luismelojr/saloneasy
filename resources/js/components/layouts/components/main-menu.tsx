@@ -126,7 +126,7 @@ export default function MainMenu({ initialItems, onSelect }: MainMenuProps) {
                                     className={cn(
                                         'flex h-[45px] w-[45px] items-center border border-transparent md:justify-center',
                                         'hover:border-[#DCDAD2] hover:bg-secondary hover:dark:border-[#2C2C2C]',
-                                        'border-[#DCDAD2] bg-background dark:border-[#2C2C2C]',
+                                        'rounded-md border-[#DCDAD2] bg-background text-primary dark:border-[#2C2C2C]',
                                     )}
                                 >
                                     <div className={'relative'}>

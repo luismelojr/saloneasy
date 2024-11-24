@@ -9,6 +9,7 @@ use App\Http\Resources\Dashboard\ScheduleExclusion\ScheduleExclusionResource;
 use App\Models\ScheduleExclusion;
 use App\Services\ScheduleExclusionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ScheduleExclusionController extends Controller
@@ -47,6 +48,10 @@ class ScheduleExclusionController extends Controller
 
     public function destroy(ScheduleExclusion $scheduleExclusion)
     {
+        if (!Gate::allows('management-schedule-exclusion', $scheduleExclusion)) {
+            return redirect()->route('hours.schedules.exclusions.index')->toast('Você não tem permissão para acessar este recurso!', 'error');
+        }
+
         $scheduleExclusion->delete();
         return redirect()->route('hours.schedules.exclusions.index')->toast('Exclusão de horário excluída com sucesso!');
     }

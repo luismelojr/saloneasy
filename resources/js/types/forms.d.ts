@@ -18,3 +18,11 @@ export interface ScheduleExclusionFormInterface {
     ends_at: string;
     reason: string;
 }
+
+export interface ConfigFormInterface {
+    avatar: File | null | string;
+    banner_image: File | null | string;
+    bio: string;
+    color_primary: string;
+    color_secondary: string;
+}

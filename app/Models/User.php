@@ -70,4 +70,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ScheduleExclusion::class);
     }
+
+    public function config()
+    {
+        return $this->hasOne(Config::class);
+    }
 }

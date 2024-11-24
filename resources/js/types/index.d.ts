@@ -123,3 +123,11 @@ export type ScheduleFieldsProps =
     | 'saturday_ends_at'
     | 'sunday_starts_at'
     | 'sunday_ends_at';
+
+export interface ConfigInterface {
+    avatar: string;
+    bio: string;
+    banner_image: string;
+    color_primary: string;
+    color_secondary: string;
+}

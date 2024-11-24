@@ -138,7 +138,10 @@ export default function Edit({ service }: ShowProps) {
                                     />
                                 </div>
                             )}
-                            <FileUpload onFileUpload={handleChangeFile} />
+                            <FileUpload
+                                id={'image_service'}
+                                onFileUpload={handleChangeFile}
+                            />
                         </div>
                         <div className={'flex w-full justify-end'}>
                             <Button type="submit" loading={form.processing}>

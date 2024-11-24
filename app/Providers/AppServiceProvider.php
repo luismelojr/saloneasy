@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Client;
+use App\Models\Config;
 use App\Models\Schedule;
+use App\Models\ScheduleExclusion;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -39,6 +41,14 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('management-schedule', function (User $user, Schedule $schedule) {
             return $user->id === $schedule->user_id;
+        });
+
+        Gate::define('management-schedule-exclusion', function (User $user, ScheduleExclusion $schedule) {
+            return $user->id === $schedule->user_id;
+        });
+
+        Gate::define('management-config', function (User $user, Config $config) {
+            return $user->id === $config->user_id;
         });
 
         JsonResource::withoutWrapping();

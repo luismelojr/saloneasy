@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\ClientController;
+use App\Http\Controllers\Dashboard\ConfigController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ScheduleController;
 use App\Http\Controllers\Dashboard\ScheduleExclusionController;
@@ -33,6 +34,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('hours-schedules/exclusions/create', [ScheduleExclusionController::class, 'create'])->name('hours.schedules.exclusions.create');
     Route::post('hours-schedules/exclusions', [ScheduleExclusionController::class, 'store'])->name('hours.schedules.exclusions.store');
     Route::delete('hours-schedules/exclusions/{scheduleExclusion}', [ScheduleExclusionController::class, 'destroy'])->name('hours.schedules.exclusions.destroy');
+
+    // Config
+    Route::get('config', [ConfigController::class, 'show'])->name('config.show');
+    Route::post('config', [ConfigController::class, 'store'])->name('config.store');
 });
 
 require __DIR__.'/auth.php';

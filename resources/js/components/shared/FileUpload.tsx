@@ -3,8 +3,16 @@ import { useState } from 'react';
 
 interface FileUploadProps {
     onFileUpload: (file: File) => void;
+    label?: string;
+    id: string;
+    urlImageActive?: string;
 }
-export default function FileUpload({ onFileUpload }: FileUploadProps) {
+export default function FileUpload({
+    onFileUpload,
+    label,
+    id,
+    urlImageActive,
+}: FileUploadProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -54,7 +62,19 @@ export default function FileUpload({ onFileUpload }: FileUploadProps) {
 
     return (
         <div className={'flex flex-col gap-2'}>
-            <Label>Imagem</Label>
+            <div className={'flex items-center gap-4'}>
+                <Label htmlFor={id}>{label ? label : 'Imagem'}</Label>
+                {urlImageActive && (
+                    <a
+                        href={urlImageActive}
+                        target="_blank"
+                        className="text-sm text-primary underline"
+                        rel="noreferrer"
+                    >
+                        Ver imagem atual
+                    </a>
+                )}
+            </div>
             <div
                 className={`flex flex-col items-center justify-center rounded-md border-2 border-dashed border-primary p-4 transition-all ${isDragging ? 'border-primary' : errorMessage ? 'border-red-500' : 'border-primary/40'}`}
                 onDragOver={handleDragOver}
@@ -66,10 +86,10 @@ export default function FileUpload({ onFileUpload }: FileUploadProps) {
                     accept={'image/*'}
                     onChange={handleChange}
                     className={'hidden'}
-                    id={'fileInput'}
+                    id={id}
                 />
                 <label
-                    htmlFor="fileInput"
+                    htmlFor={id}
                     className={
                         'flex w-full cursor-pointer flex-col items-center text-gray-500'
                     }
