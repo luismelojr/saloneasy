@@ -61,7 +61,9 @@ export const columns: ColumnDef<ScheduleExclusionInterface>[] = [
             const [isDialogOpen, setIsDialogOpen] = useState(false);
 
             const handleDelete = () => {
-                router.delete(route('clients.destroy', schedule.id));
+                router.delete(
+                    route('hours.schedules.exclusions.destroy', schedule.id),
+                );
             };
 
             return (

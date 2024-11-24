@@ -22,6 +22,7 @@ trait FilterTrait
             $filters['is_active'] = $filters['status'] === 'Ativo' ? 1 : 0;
         }
 
+
         // Iterar sobre os filtros
         foreach ($filters as $key => $value) {
             // Verificar se o filtro é um campo do modelo

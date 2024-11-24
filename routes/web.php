@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('hours-schedules/exclusions', [ScheduleExclusionController::class, 'index'])->name('hours.schedules.exclusions.index');
     Route::get('hours-schedules/exclusions/create', [ScheduleExclusionController::class, 'create'])->name('hours.schedules.exclusions.create');
     Route::post('hours-schedules/exclusions', [ScheduleExclusionController::class, 'store'])->name('hours.schedules.exclusions.store');
+    Route::delete('hours-schedules/exclusions/{scheduleExclusion}', [ScheduleExclusionController::class, 'destroy'])->name('hours.schedules.exclusions.destroy');
 });
 
 require __DIR__.'/auth.php';

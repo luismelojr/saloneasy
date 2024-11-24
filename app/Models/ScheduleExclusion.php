@@ -19,7 +19,5 @@ class ScheduleExclusion extends Model
 
     protected $casts = [
         'date' => 'date',
-        'starts_at' => 'time',
-        'ends_at' => 'time',
     ];
 }

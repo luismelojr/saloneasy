@@ -82,7 +82,7 @@ export default function Edit({ client }: EditProps) {
                                 mask={'(99) 99999-9999'}
                             />
                             <TextMask
-                                label={'Data de nascimento asas'}
+                                label={'Data de nascimento'}
                                 value={form.data.birth_date as string}
                                 onChange={(e) =>
                                     form.setData('birth_date', e.target.value)

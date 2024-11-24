@@ -13,7 +13,7 @@ export interface ClientFormInterface {
 }
 
 export interface ScheduleExclusionFormInterface {
-    date: Date;
+    date: Date | undefined;
     starts_at: string;
     ends_at: string;
     reason: string;
