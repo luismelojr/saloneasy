@@ -7,6 +7,7 @@ import Plans from '@/components/modules/landing-page/plans/plans';
 import Problem from '@/components/modules/landing-page/problem/problem';
 import Questions from '@/components/modules/landing-page/questions/questions';
 import Testimonials from '@/components/modules/landing-page/testimonials/testimonials';
+import Toast from '@/components/ui/toast';
 import { router } from '@inertiajs/react';
 
 interface HomeProps {
@@ -35,6 +36,7 @@ export default function Home({ essential, pro }: HomeProps) {
             <Questions />
             <Finish action={handleNavigation} />
             <Footer />
+            <Toast />
         </main>
     );
 }

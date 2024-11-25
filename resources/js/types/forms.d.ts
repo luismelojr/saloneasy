@@ -26,3 +26,15 @@ export interface ConfigFormInterface {
     color_primary: string;
     color_secondary: string;
 }
+
+export interface EditUserFormInterface {
+    name: string;
+    email: string;
+    phone: string;
+}
+
+export interface EditPasswordUserFormInterface {
+    old_password: string;
+    password: string;
+    password_confirmation: string;
+}

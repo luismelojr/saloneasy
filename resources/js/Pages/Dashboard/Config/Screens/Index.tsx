@@ -58,7 +58,7 @@ export default function Index({ config }: ConfigProps) {
                     }
                 />
                 <CardContentShared>
-                    <form className={'space-y-4'} onSubmit={handleSubmit}>
+                    <form className={'space-y-6'} onSubmit={handleSubmit}>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             <TextInput
                                 label={'Cor Primária'}
@@ -131,7 +131,7 @@ export default function Index({ config }: ConfigProps) {
                         <div className={'flex w-full justify-end'}>
                             <Button type="submit" loading={form.processing}>
                                 <Plus className="mr-2 h-4 w-4" />
-                                Cadastrar
+                                Salvar
                             </Button>
                         </div>
                     </form>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\ConfigController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ScheduleController;
 use App\Http\Controllers\Dashboard\ScheduleExclusionController;
 use App\Http\Controllers\Dashboard\ServiceController;
@@ -38,6 +39,12 @@ Route::middleware(['auth'])->group(function () {
     // Config
     Route::get('config', [ConfigController::class, 'show'])->name('config.show');
     Route::post('config', [ConfigController::class, 'store'])->name('config.store');
+
+    // Profile
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('profile-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
+    Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

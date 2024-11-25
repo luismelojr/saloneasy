@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Facades\Toast;
+use App\Http\Resources\Dashboard\User\UserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -33,7 +34,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => auth()->user() ? new UserResource(auth()->user()) : null,
                 'toasts' => Toast::all()
             ],
         ];

@@ -29,7 +29,7 @@ export default function DashboardLayout({
                         <div className={'flex items-center justify-end'}>
                             {menus && <BreadcrumbCustom menus={menus} />}
                         </div>
-                        <div className={'py-4'}>{children}</div>
+                        <div className={'space-y-6 py-4'}>{children}</div>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,9 @@
-export interface User {
+export interface UserInterface {
     id: number;
     name: string;
     email: string;
-    email_verified_at?: string;
+    phone: string;
+    avatar_url?: string;
 }
 
 export interface Toast {
@@ -16,7 +17,7 @@ export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
     auth: {
-        user: User;
+        user: UserInterface;
         toasts: Toast[];
     };
 };
