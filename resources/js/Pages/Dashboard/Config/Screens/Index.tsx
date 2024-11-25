@@ -29,6 +29,9 @@ export default function Index({ config }: ConfigProps) {
         bio: config.bio,
         color_primary: config.color_primary,
         color_secondary: config.color_secondary,
+        instagram: config.instagram,
+        address: config.address,
+        google_maps_url: config.google_maps_url,
     });
 
     const formattedColor = (color: string) => {
@@ -112,21 +115,62 @@ export default function Index({ config }: ConfigProps) {
                             }
                             id={'bio'}
                         />
-                        <div className={'w-full'}>
-                            <FileUpload
-                                label={'Foto de perfil'}
-                                id={'avatar'}
-                                urlImageActive={config.avatar}
-                                onFileUpload={handleChangeFileAvatar}
+                        <div
+                            className={'grid grid-cols-1 gap-6 md:grid-cols-3'}
+                        >
+                            <TextInput
+                                label={'Instagram'}
+                                error={form.errors.instagram as string}
+                                value={form.data.instagram as string}
+                                onChange={(e) =>
+                                    form.setData('instagram', e.target.value)
+                                }
+                                type={'text'}
+                                id={'instagram'}
+                            />
+                            <TextInput
+                                label={'Endereço de atendimento'}
+                                error={form.errors.address as string}
+                                value={form.data.address as string}
+                                onChange={(e) =>
+                                    form.setData('address', e.target.value)
+                                }
+                                type={'text'}
+                                id={'address'}
+                            />
+                            <TextInput
+                                label={'Link do Google Maps'}
+                                error={form.errors.google_maps_url as string}
+                                value={form.data.google_maps_url as string}
+                                onChange={(e) =>
+                                    form.setData(
+                                        'google_maps_url',
+                                        e.target.value,
+                                    )
+                                }
+                                type={'link'}
+                                id={'google_maps_url'}
                             />
                         </div>
-                        <div className={'w-full'}>
-                            <FileUpload
-                                label={'Banner'}
-                                id={'banner_image'}
-                                urlImageActive={config.banner_image}
-                                onFileUpload={handleChangeFileBanner}
-                            />
+                        <div
+                            className={'grid grid-cols-1 gap-6 md:grid-cols-2'}
+                        >
+                            <div className={'w-full'}>
+                                <FileUpload
+                                    label={'Foto de perfil'}
+                                    id={'avatar'}
+                                    urlImageActive={config.avatar}
+                                    onFileUpload={handleChangeFileAvatar}
+                                />
+                            </div>
+                            <div className={'w-full'}>
+                                <FileUpload
+                                    label={'Banner'}
+                                    id={'banner_image'}
+                                    urlImageActive={config.banner_image}
+                                    onFileUpload={handleChangeFileBanner}
+                                />
+                            </div>
                         </div>
                         <div className={'flex w-full justify-end'}>
                             <Button type="submit" loading={form.processing}>

@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('banner_image')->nullable();
             $table->string('color_primary')->nullable();
             $table->string('color_secondary')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('address')->nullable();
+            $table->string('google_maps_url')->nullable();
             $table->timestamps();
         });
     }

@@ -27,6 +27,9 @@ class ConfigRequest extends FormRequest
             'bio' => ['nullable', 'string', 'max:255'],
             'color_primary' => ['nullable', 'string', 'max:255'],
             'color_secondary' => ['nullable', 'string', 'max:255'],
+            'instagram' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'google_maps_url' => ['nullable', 'string', 'max:255'],
         ];
 
         if (is_string($this->banner_image)) {

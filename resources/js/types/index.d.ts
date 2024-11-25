@@ -131,4 +131,7 @@ export interface ConfigInterface {
     banner_image: string;
     color_primary: string;
     color_secondary: string;
+    instagram: string;
+    address: string;
+    google_maps_url: string;
 }

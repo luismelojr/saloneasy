@@ -12,6 +12,9 @@ class Config extends Model
         'banner_image',
         'color_primary',
         'color_secondary',
+        'instagram',
+        'address',
+        'google_maps_url'
     ];
 
     public function user()

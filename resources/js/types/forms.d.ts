@@ -25,6 +25,9 @@ export interface ConfigFormInterface {
     bio: string;
     color_primary: string;
     color_secondary: string;
+    instagram: string;
+    address: string;
+    google_maps_url: string;
 }
 
 export interface EditUserFormInterface {
