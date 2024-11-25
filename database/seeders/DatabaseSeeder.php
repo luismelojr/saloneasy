@@ -15,11 +15,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Luis Henrique',
             'email' => 'junimhs10@gmail.com',
             'password' => bcrypt('junior'),
             'phone' => '62982296415',
         ]);
+
+        // Create Config
+        $user->config()->create([
+            'avatar' => 'avatar.jpg',
+            'bio' => 'Desenvolvedor Full Stack',
+            'banner_image' => 'banner.jpg',
+            'color_primary' => '#000000',
+            'color_secondary' => '#ffffff',
+        ]);
+
     }
 }

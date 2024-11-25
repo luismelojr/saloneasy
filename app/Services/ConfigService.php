@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ConfigService
 {
@@ -11,27 +12,34 @@ class ConfigService
     {
         try {
             DB::beginTransaction();
+
             $user = auth()->user();
             $config = $user->config;
-            if (isset($data['avatar'])) {
+
+            // Processar upload de avatar
+            if (isset($data['avatar']) && $data['avatar'] instanceof \Illuminate\Http\UploadedFile) {
+                if ($config && $config->avatar) {
+                    Storage::disk('public')->delete($config->avatar); // Apagar avatar antigo
+                }
                 $data['avatar'] = $data['avatar']->store('avatars', 'public');
             }
 
-            if (isset($data['banner_image'])) {
+            // Processar upload de banner_image
+            if (isset($data['banner_image']) && $data['banner_image'] instanceof \Illuminate\Http\UploadedFile) {
+                if ($config && $config->banner_image) {
+                    Storage::disk('public')->delete($config->banner_image); // Apagar banner antigo
+                }
                 $data['banner_image'] = $data['banner_image']->store('banners', 'public');
             }
 
-            if ($config) {
-                $config->update($data);
-            } else {
-                $user->config()->create($data);
-            }
+            // Criar ou atualizar configuração
+            $config ? $config->update($data) : $user->config()->create($data);
+
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
-            throw new \Exception($e->getMessage());
+            report($e);
+            throw new \Exception('An error occurred while saving the configuration.');
         }
-
-
     }
 }
