@@ -135,3 +135,9 @@ export interface ConfigInterface {
     address: string;
     google_maps_url: string;
 }
+
+export interface ClientShortInterface {
+    id: number;
+    name: string;
+    phone: string;
+}

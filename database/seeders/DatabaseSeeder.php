@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Client;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -31,5 +32,8 @@ class DatabaseSeeder extends Seeder
             'color_secondary' => '#ffffff',
         ]);
 
+        // Pegar todos os clientes e vincular ao usuario com o id 1 relacionamento N:N
+         $clients = Client::all();
+        $user->clients()->attach($clients);
     }
 }

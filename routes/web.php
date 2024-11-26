@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ScheduleController;
 use App\Http\Controllers\Dashboard\ScheduleExclusionController;
+use App\Http\Controllers\Dashboard\ScheduleManuallyController;
 use App\Http\Controllers\Dashboard\ServiceController;
 use App\Http\Controllers\LandingPage\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,18 @@ Route::middleware(['auth'])->group(function () {
     Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('profile-password', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
     Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Schedule Manually
+    Route::get('schedule-manually', [ScheduleManuallyController::class, 'index'])->name('schedule.manually.index');
+
+    // Get Users
+    Route::get('users-search', function (Illuminate\Http\Request $request) {
+        if ($request->search) {
+            return response()->json(['clients' => \App\Models\Client::where('name', 'like', "%{$request->search}%")->get()]);
+        }
+
+        return response()->json(['clients' => \App\Models\Client::limit(10)->get()]);
+    })->name('users.search');
 });
 
 require __DIR__.'/auth.php';

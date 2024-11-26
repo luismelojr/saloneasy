@@ -1,5 +1,6 @@
 import {
     BaggageClaim,
+    Calendar,
     CalendarClock,
     CalendarOff,
     Cog,
@@ -44,6 +45,12 @@ export const defaultItems = [
         path: '/config',
         routeActive: ['config.*'],
     },
+    {
+        route: 'schedule.manually.index',
+        name: 'Agendamento Manual',
+        path: '/schedule-manually',
+        routeActive: ['schedule.manually.index'],
+    },
 ];
 
 export const icons: Record<string, any> = {
@@ -53,4 +60,5 @@ export const icons: Record<string, any> = {
     '/hours-schedules': () => <CalendarClock size={20} />,
     '/hours-schedules/exclusions': () => <CalendarOff size={20} />,
     '/config': () => <Cog size={20} />,
+    '/schedule-manually': () => <Calendar size={20} />,
 };

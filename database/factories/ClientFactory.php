@@ -17,10 +17,7 @@ class ClientFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::find(1);
-
         return [
-            'user_id' => $user->id,
             'name' => $this->faker->name,
             'phone' => $this->faker->phoneNumber,
             'birth_date' => $this->faker->date(),

@@ -41,3 +41,8 @@ export interface EditPasswordUserFormInterface {
     password: string;
     password_confirmation: string;
 }
+
+export interface ScheduleManuallyFormInterface {
+    service_id: number | string | null;
+    client_id: number | string | null;
+}
