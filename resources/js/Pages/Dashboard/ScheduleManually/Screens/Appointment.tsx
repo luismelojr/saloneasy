@@ -2,17 +2,22 @@ import DashboardLayout from '@/components/layouts/dashboard-layout';
 import CardShared from '@/components/shared/Card';
 import CardContentShared from '@/components/shared/CardContentShared';
 import CardTitleShared from '@/components/shared/CardTitleShared';
+import ShowClient from '@/components/shared/ShowClient';
 import ShowService from '@/components/shared/ShowService';
+import { Button } from '@/components/ui/button';
 import ButtonAction from '@/components/ui/button-action';
+import { cn } from '@/lib/utils';
 import {
     AvailabilityInterface,
+    ClientInterface,
     ServiceInterface,
     SlotInterface,
 } from '@/types';
+import { ScheduleManuallyServiceFormInterface } from '@/types/forms';
 import { easepick, LockPlugin } from '@easepick/bundle';
 import styleEasepick from '@easepick/bundle/dist/index.css?url';
 import { Core } from '@easepick/core';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { Calendar, ShoppingBag } from 'lucide-react';
 import pluralize from 'pluralize';
@@ -28,6 +33,7 @@ const menus = [
 
 interface ScheduleManuallyAppointmentProps {
     service: ServiceInterface;
+    client: ClientInterface;
     availability: AvailabilityInterface[];
     calendar: string | null;
     date: string;
@@ -36,6 +42,11 @@ interface ScheduleManuallyAppointmentProps {
 export default function Index(props: ScheduleManuallyAppointmentProps) {
     let picker: Core | null = null;
     const [slots, setSlots] = useState<SlotInterface[]>([]);
+    const form = useForm<ScheduleManuallyServiceFormInterface>({
+        service_id: props.service.id,
+        datetime: null,
+        client_id: props.client.id,
+    });
 
     const createPicker = () => {
         if (picker) return;
@@ -93,6 +104,18 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
         setSlots(Object.values(availability.slots));
     };
 
+    const setDatetime = (datetime: string) => {
+        if (form.data.datetime === datetime) {
+            form.setData('datetime', null);
+        } else {
+            form.setData('datetime', datetime);
+        }
+    };
+
+    const handleAppointment = () => {
+        console.log(form.data);
+    };
+
     useEffect(() => {
         let isRendering = false;
         createPicker();
@@ -146,10 +169,18 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                                 }
                             >
                                 <ShoppingBag className={'h-4 w-4'} />
-                                Detalhes do serviço
+                                Detalhes do serviço e cliente
                             </h3>
-                            <ShowService service={props.service} />
+                            <div
+                                className={
+                                    'grid grid-cols-1 gap-4 md:grid-cols-2'
+                                }
+                            >
+                                <ShowService service={props.service} />
+                                <ShowClient client={props.client} />
+                            </div>
                         </div>
+
                         <div>
                             <h3
                                 className={
@@ -169,16 +200,37 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                                         'flex flex-wrap items-center gap-4'
                                     }
                                 >
-                                    {slots.map((slot) => (
-                                        <span
-                                            key={slot.time}
-                                            className={'border px-2 py-4'}
+                                    {slots.map((slot, index) => (
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setDatetime(slot.datetime)
+                                            }
+                                            key={index}
+                                            className={cn(
+                                                'cursor-pointer rounded-md border border-slate-200 px-4 py-3 text-center text-sm hover:border-primary',
+                                                {
+                                                    'border-primary bg-primary text-white':
+                                                        form.data.datetime ===
+                                                        slot.datetime,
+                                                },
+                                            )}
                                         >
                                             {slot.time}
-                                        </span>
+                                        </button>
                                     ))}
                                 </div>
                             </div>
+                        </div>
+                        <div className={'flex w-full justify-end'}>
+                            <Button
+                                type="button"
+                                loading={form.processing}
+                                onClick={handleAppointment}
+                            >
+                                <Calendar className="mr-2 h-4 w-4" />
+                                Agendar
+                            </Button>
                         </div>
                     </div>
                 </CardContentShared>

@@ -5,11 +5,12 @@ import CardContentShared from '@/components/shared/CardContentShared';
 import CardTitleShared from '@/components/shared/CardTitleShared';
 import NotFound from '@/components/shared/NotFound';
 import { Button } from '@/components/ui/button';
+import { SelectCustom } from '@/components/ui/select-custom';
 import { Separator } from '@/components/ui/separator';
 import CardLoading from '@/Pages/Dashboard/ScheduleManually/Loading/CardLoading';
 import { ServiceInterface } from '@/types';
 import { router } from '@inertiajs/react';
-import { Search, X } from 'lucide-react';
+import { Calendar, Search, User, X } from 'lucide-react';
 import { useState } from 'react';
 
 const menus = [
@@ -23,11 +24,21 @@ const menus = [
 interface ScheduleManuallyProps {
     services: ServiceInterface[];
     search: string;
+    clients: { value: number; label: string }[];
 }
 
-export default function Index({ services, search }: ScheduleManuallyProps) {
+export default function Index({
+    services,
+    search,
+    clients,
+}: ScheduleManuallyProps) {
     const [searchState, setSearchState] = useState(search ?? '');
     const [loading, setLoading] = useState(false);
+    const [service, setService] = useState<ServiceInterface | null>(null);
+    const [client, setClient] = useState<{
+        value: number;
+        label: string;
+    } | null>(null);
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleFetch();
@@ -55,9 +66,16 @@ export default function Index({ services, search }: ScheduleManuallyProps) {
         handleFetch();
     };
 
-    const handleNavigation = (id: number) => {
+    const handleSelectService = (service: ServiceInterface) => {
+        setService(service);
+    };
+
+    const handleNavigation = () => {
         router.get(
-            route('schedule.manually.index.appointment', { service: id }),
+            route('schedule.manually.index.appointment', {
+                service: service?.id,
+                client: client?.value,
+            }),
         );
     };
 
@@ -119,11 +137,14 @@ export default function Index({ services, search }: ScheduleManuallyProps) {
                                     'grid grid-cols-1 gap-4 md:grid-cols-4'
                                 }
                             >
-                                {services.map((service) => (
-                                    <li key={service.id}>
+                                {services.map((item) => (
+                                    <li key={item.id}>
                                         <BlockService
-                                            service={service}
-                                            action={handleNavigation}
+                                            service={item}
+                                            action={() =>
+                                                handleSelectService(item)
+                                            }
+                                            active={item.id === service?.id}
                                         />
                                     </li>
                                 ))}
@@ -131,6 +152,41 @@ export default function Index({ services, search }: ScheduleManuallyProps) {
                         ) : (
                             <NotFound />
                         )}
+                        <div className={'space-y-2'}>
+                            <h3
+                                className={
+                                    'text-md mb-2 flex items-center gap-2 font-semibold text-gray-600'
+                                }
+                            >
+                                <User className={'h-4 w-4'} />
+                                Selecionar cliente
+                            </h3>
+                            <SelectCustom
+                                options={clients}
+                                createAble={false}
+                                onChange={(item) =>
+                                    setClient({
+                                        value: item.value,
+                                        label: item.label,
+                                    })
+                                }
+                                error={
+                                    client && service !== null
+                                        ? ''
+                                        : 'Selecione um cliente'
+                                }
+                            />
+                        </div>
+                        <div className={'flex w-full justify-end'}>
+                            <Button
+                                type="button"
+                                disabled={!client || !service}
+                                onClick={handleNavigation}
+                            >
+                                <Calendar className="mr-2 h-4 w-4" />
+                                Agendar
+                            </Button>
+                        </div>
                     </div>
                 </CardContentShared>
             </CardShared>

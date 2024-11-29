@@ -1,17 +1,26 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { ServiceInterface } from '@/types';
 import { Banknote, Clock, ShoppingBag } from 'lucide-react';
 
 interface BlockServiceProps {
     service: ServiceInterface;
     action: (id: number) => void;
+    active?: boolean;
 }
-export default function BlockService({ service, action }: BlockServiceProps) {
+export default function BlockService({
+    service,
+    action,
+    active,
+}: BlockServiceProps) {
     return (
         <div
-            className={
-                'flex w-full cursor-pointer flex-col justify-between rounded-md border p-4 hover:border-primary'
-            }
+            className={cn(
+                'flex w-full cursor-pointer flex-col justify-between rounded-md border p-4 hover:border-primary',
+                {
+                    'border-primary': active,
+                },
+            )}
             onClick={() => action(service.id)}
         >
             <div className={'flex flex-col gap-2'}>

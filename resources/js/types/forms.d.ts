@@ -46,3 +46,9 @@ export interface ScheduleManuallyFormInterface {
     service_id: number | string | null;
     client_id: number | string | null;
 }
+
+export interface ScheduleManuallyServiceFormInterface {
+    service_id: number;
+    client_id: number | null;
+    datetime: string | null;
+}
