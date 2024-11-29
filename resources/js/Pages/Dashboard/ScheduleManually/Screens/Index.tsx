@@ -26,7 +26,7 @@ interface ScheduleManuallyProps {
 }
 
 export default function Index({ services, search }: ScheduleManuallyProps) {
-    const [searchState, setSearchState] = useState(search);
+    const [searchState, setSearchState] = useState(search ?? '');
     const [loading, setLoading] = useState(false);
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -53,6 +53,12 @@ export default function Index({ services, search }: ScheduleManuallyProps) {
     const clearSearch = () => {
         setSearchState('');
         handleFetch();
+    };
+
+    const handleNavigation = (id: number) => {
+        router.get(
+            route('schedule.manually.index.appointment', { service: id }),
+        );
     };
 
     return (
@@ -115,7 +121,10 @@ export default function Index({ services, search }: ScheduleManuallyProps) {
                             >
                                 {services.map((service) => (
                                     <li key={service.id}>
-                                        <BlockService service={service} />
+                                        <BlockService
+                                            service={service}
+                                            action={handleNavigation}
+                                        />
                                     </li>
                                 ))}
                             </ul>

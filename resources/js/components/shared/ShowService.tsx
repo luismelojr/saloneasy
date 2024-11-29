@@ -1,18 +1,16 @@
-import { Button } from '@/components/ui/button';
 import { ServiceInterface } from '@/types';
 import { Banknote, Clock, ShoppingBag } from 'lucide-react';
 
-interface BlockServiceProps {
+interface ShowServiceProps {
     service: ServiceInterface;
-    action: (id: number) => void;
 }
-export default function BlockService({ service, action }: BlockServiceProps) {
+
+export default function ShowService({ service }: ShowServiceProps) {
     return (
         <div
             className={
                 'flex w-full cursor-pointer flex-col justify-between rounded-md border p-4 hover:border-primary'
             }
-            onClick={() => action(service.id)}
         >
             <div className={'flex flex-col gap-2'}>
                 {service.image_url ? (
@@ -49,13 +47,6 @@ export default function BlockService({ service, action }: BlockServiceProps) {
                         </span>
                     </div>
                 </div>
-                <Button
-                    size={'sm'}
-                    className={'mt-4'}
-                    onClick={() => action(service.id)}
-                >
-                    Selecionar
-                </Button>
             </div>
         </div>
     );

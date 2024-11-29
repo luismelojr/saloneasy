@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Dashboard\Hours\AvailabilityResource;
 use App\Http\Resources\Dashboard\Services\ServiceResource;
+use App\Services\GetServiceSlotService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Inertia\Inertia;
 
 class ScheduleManuallyController extends Controller
 {
+    public function __construct(
+        private readonly GetServiceSlotService $getServiceSlotService
+    ){}
+
     public function index(Request $request)
     {
         $query = auth()->user()->services();
@@ -24,6 +30,27 @@ class ScheduleManuallyController extends Controller
         return Inertia::render('Dashboard/ScheduleManually/Screens/Index', [
             'services' => ServiceResource::collection($services),
             'search' => $request->search,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$request->has('service')) {
+            return redirect()->route('schedule.manually.index.service')->toast('Serviço não encontrado', 'error');
+        }
+
+        if ($user->services()->where('services.id', $request->service)->doesntExist()) {
+            return redirect()->route('schedule.manually.index.service')->toast('Serviço não encontrado', 'error');
+        }
+
+        $results = $this->getServiceSlotService->execute($user, $request->service, $request);
+        return Inertia::render('Dashboard/ScheduleManually/Screens/Appointment', [
+            'service' => new ServiceResource($results['service']),
+            'availability' => AvailabilityResource::collection($results['availability']),
+            'date' => $results['date'],
+            'calendar' => $request->calendar,
         ]);
     }
 }

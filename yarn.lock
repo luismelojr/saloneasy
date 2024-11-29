@@ -204,7 +204,7 @@
     "@easepick/range-plugin" "^1.1.0"
     "@easepick/time-plugin" "^1.1.0"
 
-"@easepick/core@^1.1.0":
+"@easepick/core@^1.1.0", "@easepick/core@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@easepick/core/-/core-1.2.1.tgz#f7b23ee89129a4bc38968015d4300f79b5bd3eda"
   integrity sha512-V/blEia/ykAq+0mnQ9djOU5wvMZ+iffL5iuQrKLObpMOw38kL/qo4inH4pCbB3wm7sDjrJTuDKf+6+FrgdFGsw==

@@ -22,7 +22,8 @@ class GetServiceSlotService
 
         return [
             'availability' => $availabilityDates,
-            'date' => $availability->firstAvailableDate()?->date->toDateString()
+            'date' => $availability->firstAvailableDate()?->date->toDateString(),
+            'service' => $service
         ];
     }
 }

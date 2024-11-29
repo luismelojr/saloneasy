@@ -141,3 +141,14 @@ export interface ClientShortInterface {
     name: string;
     phone: string;
 }
+
+export interface AvailabilityInterface {
+    date: string;
+    slots: SlotInterface[];
+}
+
+export interface SlotInterface {
+    datetime: string;
+    employee: number;
+    time: string;
+}
