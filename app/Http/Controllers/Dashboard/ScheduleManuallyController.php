@@ -10,19 +10,20 @@ use Inertia\Inertia;
 
 class ScheduleManuallyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $services = auth()->user()->services()->get()->map(function ($services) {
-            return [
-                'value' => $services->id,
-                'label' => $services->name,
-            ];
-        });
+        $query = auth()->user()->services();
 
-        $crypt = Crypt::encrypt(auth()->user()->id);
+        // Verifica se há um termo de busca
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $services = $query->get();
+
         return Inertia::render('Dashboard/ScheduleManually/Screens/Index', [
-            'services' => $services,
-            'user' => $crypt
+            'services' => ServiceResource::collection($services),
+            'search' => $request->search,
         ]);
     }
 }

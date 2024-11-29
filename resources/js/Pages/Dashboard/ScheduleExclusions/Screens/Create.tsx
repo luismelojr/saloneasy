@@ -32,15 +32,6 @@ export default function Create() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Verificar se a data e hora de início são menores que a data e hora atual
-        if (new Date(form.data.date as Date) < new Date()) {
-            form.clearErrors();
-            form.setError(
-                'date',
-                'A data não pode ser menor que a data atual.',
-            );
-            return;
-        }
 
         if (form.data.starts_at > form.data.ends_at) {
             form.clearErrors();
