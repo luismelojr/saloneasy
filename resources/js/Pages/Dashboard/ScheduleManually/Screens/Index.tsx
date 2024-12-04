@@ -163,7 +163,7 @@ export default function Index({
                             </h3>
                             <SelectCustom
                                 options={clients}
-                                createAble={false}
+                                createAble={true}
                                 onChange={(item) =>
                                     setClient({
                                         value: item.value,

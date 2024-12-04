@@ -16,7 +16,7 @@ export default function BlockService({
     return (
         <div
             className={cn(
-                'flex w-full cursor-pointer flex-col justify-between rounded-md border p-4 hover:border-primary',
+                'group flex w-full cursor-pointer flex-col justify-between rounded-md border p-4 hover:border-primary',
                 {
                     'border-primary': active,
                 },
@@ -60,10 +60,16 @@ export default function BlockService({
                 </div>
                 <Button
                     size={'sm'}
-                    className={'mt-4'}
+                    variant={'outline'}
+                    className={cn(
+                        'mt-4 group-hover:bg-primary group-hover:text-white',
+                        {
+                            'bg-primary text-white': active,
+                        },
+                    )}
                     onClick={() => action(service.id)}
                 >
-                    Selecionar
+                    {active ? 'Selecionado' : 'Selecionar'}
                 </Button>
             </div>
         </div>

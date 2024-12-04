@@ -64,7 +64,6 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
             zIndex: 50,
             plugins: [LockPlugin],
             LockPlugin: {
-                minDate: new Date(),
                 filter(date) {
                     const newDate = format(
                         new Date(date.toLocaleString()),
