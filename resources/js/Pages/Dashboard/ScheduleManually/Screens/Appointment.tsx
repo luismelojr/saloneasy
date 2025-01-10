@@ -6,22 +6,20 @@ import ShowClient from '@/components/shared/ShowClient';
 import ShowService from '@/components/shared/ShowService';
 import { Button } from '@/components/ui/button';
 import ButtonAction from '@/components/ui/button-action';
+import CustomCalendar from '@/components/ui/custom-calendar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import {
     AvailabilityInterface,
     ClientInterface,
     ServiceInterface,
-    SlotInterface,
+    type SlotInterface,
 } from '@/types';
 import { ScheduleManuallyServiceFormInterface } from '@/types/forms';
-import { easepick, LockPlugin } from '@easepick/bundle';
-import styleEasepick from '@easepick/bundle/dist/index.css?url';
-import { Core } from '@easepick/core';
 import { router, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { Calendar, ShoppingBag } from 'lucide-react';
-import pluralize from 'pluralize';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const menus = [
     {
@@ -40,110 +38,52 @@ interface ScheduleManuallyAppointmentProps {
 }
 
 export default function Index(props: ScheduleManuallyAppointmentProps) {
-    let picker: Core | null = null;
-    const [slots, setSlots] = useState<SlotInterface[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [selectAvailability, setSelectAvailability] =
+        useState<AvailabilityInterface | null>(null);
     const form = useForm<ScheduleManuallyServiceFormInterface>({
         service_id: props.service.id,
         datetime: null,
         client_id: props.client.id,
     });
 
-    const createPicker = () => {
-        if (picker) return;
-
-        picker = new easepick.create({
-            css: [
-                styleEasepick,
-                'http://saloneasy.test/assets/css/vendor/easepick.css',
-            ],
-            date: props.date,
-            element: document.getElementById('easedatepicker') as HTMLElement,
-            inline: true,
-            readonly: true,
-            lang: 'pt-BR',
-            zIndex: 50,
-            plugins: [LockPlugin],
-            LockPlugin: {
-                filter(date) {
-                    const newDate = format(
-                        new Date(date.toLocaleString()),
-                        'yyyy-MM-dd',
-                    );
-                    return !props.availability.find((a) => a.date === newDate);
-                },
-            },
-            setup(picker: Core) {
-                picker.on('view', (e) => {
-                    const { view, date, target } = e.detail;
-                    const dateString = date ? date.format('YYYY-MM-DD') : null;
-                    const availability = props.availability.find(
-                        (a) => a.date === dateString,
-                    );
-
-                    if (view === 'CalendarDay' && availability) {
-                        const span =
-                            target.querySelector('.day-slots') ||
-                            document.createElement('span');
-                        span.className = 'day-slots';
-                        span.innerHTML = pluralize(
-                            'vaga',
-                            Object.keys(availability.slots).length,
-                            true,
-                        );
-                        target.append(span);
-                    }
-                });
-            },
-        });
-    };
-
-    const editSlot = (date: string) => {
-        const availability = props.availability.find((a) => a.date === date);
-        if (!availability) return;
-        setSlots(Object.values(availability.slots));
-    };
-
-    const setDatetime = (datetime: string) => {
-        if (form.data.datetime === datetime) {
-            form.setData('datetime', null);
-        } else {
-            form.setData('datetime', datetime);
-        }
-    };
-
     const handleAppointment = () => {
-        console.log(form.data);
+        form.post(route('schedule.manually.store.appointment'));
     };
 
-    useEffect(() => {
-        let isRendering = false;
-        createPicker();
-        editSlot(props.date);
-        picker?.on('select', (e: any) => {
-            editSlot(e.detail.date.format('YYYY-MM-DD'));
+    const handleMonthChange = (date: Date) => {
+        resetFormDateTimeAndSelectAvailability();
+        router.reload({
+            data: {
+                calendar: format(date, 'yyyy-MM-dd'),
+            },
+            only: ['availability', 'calendar', 'date'],
+            onStart: () => {
+                setLoading(true);
+            },
+            onSuccess: () => {
+                setLoading(false);
+            },
         });
-        picker?.on('render', (e: any) => {
-            if (isRendering) return;
-            const { view, date } = e.detail;
+    };
 
-            if (
-                view === 'Container' &&
-                date.format('YYYY-MM-DD') !== props.calendar
-            ) {
-                isRendering = true;
-                router.reload({
-                    data: {
-                        calendar: date.format('YYYY-MM-DD'),
-                    },
-                    only: ['availability', 'calendar', 'date'],
-                    onSuccess: () => {
-                        window.location.reload();
-                        isRendering = false;
-                    },
-                });
-            }
-        });
-    }, []);
+    const handleDateSelect = (date: Date) => {
+        resetFormDateTimeAndSelectAvailability();
+        const availability = props.availability.find(
+            (item) => item.date === format(date, 'yyyy-MM-dd'),
+        );
+        setSelectAvailability(availability || null);
+    };
+
+    const handleSelectSlot = (slot: SlotInterface) => {
+        form.setData('datetime', slot.datetime);
+    };
+
+    const resetFormDateTimeAndSelectAvailability = () => {
+        form.setData('datetime', null);
+        setSelectAvailability(null);
+    };
+
     return (
         <DashboardLayout menus={menus}>
             <CardShared>
@@ -189,36 +129,61 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                                 <Calendar className={'h-4 w-4'} />
                                 Agendar horário
                             </h3>
-                            <div className={'flex items-start gap-4'}>
-                                <div
-                                    id={'easedatepicker'}
-                                    className={'hidden'}
-                                ></div>
-                                <div
-                                    className={
-                                        'flex flex-wrap items-center gap-4'
-                                    }
-                                >
-                                    {slots.map((slot, index) => (
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                setDatetime(slot.datetime)
-                                            }
-                                            key={index}
-                                            className={cn(
-                                                'cursor-pointer rounded-md border border-slate-200 px-4 py-3 text-center text-sm hover:border-primary',
-                                                {
-                                                    'border-primary bg-primary text-white':
-                                                        form.data.datetime ===
-                                                        slot.datetime,
-                                                },
-                                            )}
-                                        >
-                                            {slot.time}
-                                        </button>
-                                    ))}
-                                </div>
+                            <div
+                                className={
+                                    'grid grid-cols-1 items-start gap-2 md:grid-cols-2 md:gap-0'
+                                }
+                            >
+                                <CustomCalendar
+                                    availableSlots={props.availability}
+                                    onMonthChange={handleMonthChange}
+                                    onDateSelect={handleDateSelect}
+                                    loading={loading}
+                                />
+                                {selectAvailability ? (
+                                    <div
+                                        className={
+                                            'grid grid-cols-1 gap-2 md:grid-cols-4'
+                                        }
+                                    >
+                                        {loading
+                                            ? Array.from(
+                                                  { length: 4 },
+                                                  (_, index) => (
+                                                      <Skeleton
+                                                          key={index}
+                                                          className="h-12 w-full rounded-md"
+                                                      />
+                                                  ),
+                                              )
+                                            : selectAvailability &&
+                                              Object.values(
+                                                  selectAvailability.slots,
+                                              ).map((slot, index) => (
+                                                  <button
+                                                      key={index}
+                                                      className={cn(
+                                                          `h-12 rounded-md border-2 text-sm font-medium transition-colors hover:bg-primary hover:text-white ${form.data.datetime === slot.datetime ? 'border-primary bg-primary text-white' : 'border-gray-200 text-gray-500'}`,
+                                                      )}
+                                                      onClick={() =>
+                                                          handleSelectSlot(slot)
+                                                      }
+                                                  >
+                                                      <span>{slot.time}</span>
+                                                  </button>
+                                              ))}
+                                    </div>
+                                ) : (
+                                    <div
+                                        className={
+                                            'flex w-full items-center justify-center rounded-md'
+                                        }
+                                    >
+                                        <span className={'text-gray-500'}>
+                                            Nenhuma data selecionada
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className={'flex w-full justify-end'}>
@@ -226,6 +191,7 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                                 type="button"
                                 loading={form.processing}
                                 onClick={handleAppointment}
+                                disabled={!form.data.datetime}
                             >
                                 <Calendar className="mr-2 h-4 w-4" />
                                 Agendar

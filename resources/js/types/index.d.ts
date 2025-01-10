@@ -144,7 +144,11 @@ export interface ClientShortInterface {
 
 export interface AvailabilityInterface {
     date: string;
-    slots: SlotInterface[];
+    slots: SlotsMap;
+}
+
+interface SlotsMap {
+    [key: string]: SlotInterface;
 }
 
 export interface SlotInterface {

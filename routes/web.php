@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     // Schedule Manually
     Route::get('schedule-manually/service', [ScheduleManuallyController::class, 'index'])->name('schedule.manually.index.service');
     Route::get('schedule-manually/appointment', [ScheduleManuallyController::class, 'store'])->name('schedule.manually.index.appointment');
+    Route::post('schedule-manually/appointment', [ScheduleManuallyController::class, 'storeAppointment'])->name('schedule.manually.store.appointment');
 
     // Get Users
     Route::get('users-search', GetUserSearchController::class)->name('users.search');

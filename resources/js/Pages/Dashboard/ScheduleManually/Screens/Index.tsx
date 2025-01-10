@@ -5,7 +5,7 @@ import CardContentShared from '@/components/shared/CardContentShared';
 import CardTitleShared from '@/components/shared/CardTitleShared';
 import NotFound from '@/components/shared/NotFound';
 import { Button } from '@/components/ui/button';
-import { SelectCustom } from '@/components/ui/select-custom';
+import CustomSelect, { type Option } from '@/components/ui/custom-select';
 import { Separator } from '@/components/ui/separator';
 import CardLoading from '@/Pages/Dashboard/ScheduleManually/Loading/CardLoading';
 import { ServiceInterface } from '@/types';
@@ -24,7 +24,7 @@ const menus = [
 interface ScheduleManuallyProps {
     services: ServiceInterface[];
     search: string;
-    clients: { value: number; label: string }[];
+    clients: Option[];
 }
 
 export default function Index({
@@ -35,10 +35,7 @@ export default function Index({
     const [searchState, setSearchState] = useState(search ?? '');
     const [loading, setLoading] = useState(false);
     const [service, setService] = useState<ServiceInterface | null>(null);
-    const [client, setClient] = useState<{
-        value: number;
-        label: string;
-    } | null>(null);
+    const [client, setClient] = useState<string>('');
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleFetch();
@@ -74,7 +71,7 @@ export default function Index({
         router.get(
             route('schedule.manually.index.appointment', {
                 service: service?.id,
-                client: client?.value,
+                client: client,
             }),
         );
     };
@@ -88,7 +85,26 @@ export default function Index({
                         'Selecione um serviço para agendar um horário manualmente.'
                     }
                 />
-                <CardContentShared>
+                <CardContentShared className="space-y-6">
+                    <div className={'space-y-2'}>
+                        <h3
+                            className={
+                                'text-md mb-2 flex items-center gap-2 font-semibold text-gray-600'
+                            }
+                        >
+                            <User className={'h-4 w-4'} />
+                            Selecionar cliente
+                        </h3>
+                        <CustomSelect
+                            type="single"
+                            options={clients}
+                            value={client}
+                            onChange={setClient}
+                            placeholder="Selecione um cliente"
+                            searchPlaceholder="Pesquisar cliente"
+                        />
+                    </div>
+                    <hr />
                     <div className={'space-y-6'}>
                         <form className={'flex gap-4'} onSubmit={handleSearch}>
                             <div
@@ -152,31 +168,6 @@ export default function Index({
                         ) : (
                             <NotFound />
                         )}
-                        <div className={'space-y-2'}>
-                            <h3
-                                className={
-                                    'text-md mb-2 flex items-center gap-2 font-semibold text-gray-600'
-                                }
-                            >
-                                <User className={'h-4 w-4'} />
-                                Selecionar cliente
-                            </h3>
-                            <SelectCustom
-                                options={clients}
-                                createAble={true}
-                                onChange={(item) =>
-                                    setClient({
-                                        value: item.value,
-                                        label: item.label,
-                                    })
-                                }
-                                error={
-                                    client && service !== null
-                                        ? ''
-                                        : 'Selecione um cliente'
-                                }
-                            />
-                        </div>
                         <div className={'flex w-full justify-end'}>
                             <Button
                                 type="button"

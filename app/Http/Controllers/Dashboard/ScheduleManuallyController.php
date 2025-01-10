@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dasbhoard\Schedules\CreateScheduleRequest;
 use App\Http\Resources\Dashboard\Clients\ClientResource;
 use App\Http\Resources\Dashboard\Hours\AvailabilityResource;
 use App\Http\Resources\Dashboard\Services\ServiceResource;
 use App\Services\GetServiceSlotService;
+use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Inertia\Inertia;
@@ -14,7 +16,8 @@ use Inertia\Inertia;
 class ScheduleManuallyController extends Controller
 {
     public function __construct(
-        private readonly GetServiceSlotService $getServiceSlotService
+        private readonly GetServiceSlotService $getServiceSlotService,
+        private readonly ScheduleService $service
     ){}
 
     public function index(Request $request)
@@ -62,5 +65,10 @@ class ScheduleManuallyController extends Controller
             'calendar' => $request->calendar,
             'client' => new ClientResource($client)
         ]);
+    }
+
+    public function storeAppointment(CreateScheduleRequest $request)
+    {
+        $this->service->createAppointment($request->service_id, $request->client_id, $request->datetime);
     }
 }
