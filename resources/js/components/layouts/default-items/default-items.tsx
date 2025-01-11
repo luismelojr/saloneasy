@@ -46,10 +46,10 @@ export const defaultItems = [
         routeActive: ['config.*'],
     },
     {
-        route: 'schedule.manually.index',
+        route: 'schedule.manually.index.service',
         name: 'Agendamento Manual',
-        path: '/schedule-manually',
-        routeActive: ['schedule.manually.index'],
+        path: '/schedule-manually/service',
+        routeActive: ['schedule.manually.index.service'],
     },
 ];
 
@@ -60,5 +60,5 @@ export const icons: Record<string, any> = {
     '/hours-schedules': () => <CalendarClock size={20} />,
     '/hours-schedules/exclusions': () => <CalendarOff size={20} />,
     '/config': () => <Cog size={20} />,
-    '/schedule-manually': () => <Calendar size={20} />,
+    '/schedule-manually/service': () => <Calendar size={20} />,
 };

@@ -1,0 +1,23 @@
+:host {
+    --day-height: 40px;
+    --day-width: 40px;
+    --color-bg-locked: #cbd5e1;
+    --color-fg-accent: #433BCE;
+    box-shadow: none;
+}
+
+.container.inline {
+    box-shadow: none;
+    border: 1px solid #cbd5e1;
+}
+.unit {
+    cursor: pointer !important;
+}
+
+
+@media (max-width: 480px) {
+    .unit {
+        font-size: 12px !important;
+        text-align: center !important;
+    }
+}

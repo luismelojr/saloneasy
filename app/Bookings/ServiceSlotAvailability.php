@@ -24,6 +24,7 @@ class ServiceSlotAvailability
 
         $periods = (new ScheduleAvailability($this->employee, $this->service))->forPeriod($startsAt, $endsAt);
 
+
         $periods = $this->removeAppointments($periods, $this->employee);
 
         foreach ($periods as $period) {

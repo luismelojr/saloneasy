@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\GetSlotServiceController;
+use App\Http\Controllers\Api\GetUserSearchController;
 use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\ConfigController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
+
+Route::get('/teste', function () {
+    return Inertia::render('Teste');
+});
 
 
 Route::middleware(['auth'])->group(function () {
@@ -48,16 +54,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Schedule Manually
-    Route::get('schedule-manually', [ScheduleManuallyController::class, 'index'])->name('schedule.manually.index');
+    Route::get('schedule-manually/service', [ScheduleManuallyController::class, 'index'])->name('schedule.manually.index.service');
+    Route::get('schedule-manually/appointment', [ScheduleManuallyController::class, 'store'])->name('schedule.manually.index.appointment');
+    Route::post('schedule-manually/appointment', [ScheduleManuallyController::class, 'storeAppointment'])->name('schedule.manually.store.appointment');
 
     // Get Users
-    Route::get('users-search', function (Illuminate\Http\Request $request) {
-        if ($request->search) {
-            return response()->json(['clients' => \App\Models\Client::where('name', 'like', "%{$request->search}%")->get()]);
-        }
+    Route::get('users-search', GetUserSearchController::class)->name('users.search');
 
-        return response()->json(['clients' => \App\Models\Client::limit(10)->get()]);
-    })->name('users.search');
+    // Get Slot Service
+    Route::get('slot-service', GetSlotServiceController::class)->name('slot.service');
 });
 
 require __DIR__.'/auth.php';

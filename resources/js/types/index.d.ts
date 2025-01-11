@@ -141,3 +141,18 @@ export interface ClientShortInterface {
     name: string;
     phone: string;
 }
+
+export interface AvailabilityInterface {
+    date: string;
+    slots: SlotsMap;
+}
+
+interface SlotsMap {
+    [key: string]: SlotInterface;
+}
+
+export interface SlotInterface {
+    datetime: string;
+    employee: number;
+    time: string;
+}

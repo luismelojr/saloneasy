@@ -89,7 +89,7 @@ export default function Create() {
                             }
                         >
                             <TextInput
-                                label={'Duração'}
+                                label={'Duração (em minutos)'}
                                 error={form.errors.duration as string}
                                 value={form.data.duration as string}
                                 onChange={(e) =>

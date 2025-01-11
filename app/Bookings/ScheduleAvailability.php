@@ -30,7 +30,7 @@ class ScheduleAvailability
             $this->addAvailabilityFromSchedule($date);
 
             $this->employee->schedulesExclusions()
-                ->where('date', $date->toString())
+                ->where('date', $date->format('Y-m-d'))
                 ->each(function (ScheduleExclusion $exclusion) use ($date) {
                 $this->subtractScheduleExclusion($date, $exclusion);
             });
