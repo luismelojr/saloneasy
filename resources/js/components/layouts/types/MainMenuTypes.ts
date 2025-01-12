@@ -7,6 +7,7 @@ export interface SingleItemProps {
 export interface MainMenuProps {
     initialItems?: SingleItemProps[];
     onSelect?: () => void;
+    isCollapsed: boolean;
 }
 
 export interface SingleItemProps {
@@ -24,4 +25,5 @@ export interface ItemProps {
     disableRemove: boolean;
     onDragEnd: () => void;
     onSelect?: () => void;
+    isCollapsed: boolean;
 }

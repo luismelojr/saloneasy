@@ -42,7 +42,10 @@ export default function MenuMobile() {
                 </SheetTitle>
                 <SheetDescription asChild>
                     <div className={'-ml-2 mt-10'}>
-                        <MainMenu onSelect={() => setIsOpen(false)} />
+                        <MainMenu
+                            onSelect={() => setIsOpen(false)}
+                            isCollapsed={false}
+                        />
                     </div>
                 </SheetDescription>
             </SheetContent>

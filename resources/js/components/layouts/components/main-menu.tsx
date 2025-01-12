@@ -1,4 +1,5 @@
 import { Item } from '@/components/layouts/components/item';
+import { useSidebar } from '@/components/layouts/dashboard-layout';
 import {
     defaultItems,
     icons,
@@ -32,6 +33,7 @@ const itemVariant = {
 };
 
 export default function MainMenu({ initialItems, onSelect }: MainMenuProps) {
+    const { isCollapsed } = useSidebar();
     const [items, setItems] = useState(
         initialItems !== undefined
             ? initialItems.length > 0
@@ -103,6 +105,7 @@ export default function MainMenu({ initialItems, onSelect }: MainMenuProps) {
                                 disableRemove={items.length === 1}
                                 onDragEnd={onDragEnd}
                                 onSelect={onSelect}
+                                isCollapsed={isCollapsed}
                             />
                         );
                     })}

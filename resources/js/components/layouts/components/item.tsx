@@ -20,6 +20,7 @@ export const Item = ({
     disableRemove,
     onDragEnd,
     onSelect,
+    isCollapsed,
 }: ItemProps) => {
     const y = useMotionValue(0);
     const Icon = icons[item.path];
@@ -50,7 +51,10 @@ export const Item = ({
                             style={{ y }}
                             layoutRoot
                             className={cn(
-                                'relative flex h-[45px] items-center border border-transparent md:w-[45px] md:justify-center',
+                                'relative flex h-[45px] items-center border border-transparent',
+                                isCollapsed
+                                    ? 'w-[45px] justify-center'
+                                    : 'w-full',
                                 'text-white hover:rounded-md hover:border-[#DCDAD2] hover:bg-accent hover:text-primary hover:dark:border-[#2C2C2C]',
                                 isActive &&
                                     'rounded-md border-[#DCDAD2] bg-[#F2F1EF] text-primary dark:border-[#2C2C2C] dark:bg-secondary',
@@ -79,26 +83,31 @@ export const Item = ({
 
                                 <div
                                     className={cn(
-                                        'flex items-center space-x-3 p-0 pl-2 md:pl-0',
+                                        'flex items-center space-x-3',
+                                        isCollapsed ? 'p-0' : 'p-0 pl-2',
                                         isCustomizing &&
                                             'pointer-events-none transform-gpu animate-[swing_0.3s_ease-in-out_infinite]',
                                     )}
                                 >
                                     <Icon />
-                                    <span className="flex md:hidden">
-                                        {item.name}
-                                    </span>
+                                    {!isCollapsed && (
+                                        <span className="flex text-sm">
+                                            {item.name}
+                                        </span>
+                                    )}
                                 </div>
                             </motion.div>
                         </Reorder.Item>
                     </TooltipTrigger>
-                    <TooltipContent
-                        side="left"
-                        className="hidden px-3 py-1.5 text-xs md:flex"
-                        sideOffset={16}
-                    >
-                        {item.name}
-                    </TooltipContent>
+                    {isCollapsed && (
+                        <TooltipContent
+                            side="right"
+                            className="px-3 py-1.5 text-xs"
+                            sideOffset={16}
+                        >
+                            {item.name}
+                        </TooltipContent>
+                    )}
                 </Tooltip>
             </Link>
         </TooltipProvider>
