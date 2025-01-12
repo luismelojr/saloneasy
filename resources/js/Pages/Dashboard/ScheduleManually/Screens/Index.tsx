@@ -4,13 +4,18 @@ import CardShared from '@/components/shared/Card';
 import CardContentShared from '@/components/shared/CardContentShared';
 import CardTitleShared from '@/components/shared/CardTitleShared';
 import NotFound from '@/components/shared/NotFound';
+import ServiceList from '@/components/shared/ServiceList';
+import CreateClients, {
+    type FormData as ClientFormData,
+} from '@/components/slide-overs/CreateClients';
 import { Button } from '@/components/ui/button';
 import CustomSelect, { type Option } from '@/components/ui/custom-select';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import CardLoading from '@/Pages/Dashboard/ScheduleManually/Loading/CardLoading';
 import { ServiceInterface } from '@/types';
 import { router } from '@inertiajs/react';
-import { Calendar, Search, User, X } from 'lucide-react';
+import { Calendar, Grid3X3, List, Search, User, X } from 'lucide-react';
 import { useState } from 'react';
 
 const menus = [
@@ -36,6 +41,9 @@ export default function Index({
     const [loading, setLoading] = useState(false);
     const [service, setService] = useState<ServiceInterface | null>(null);
     const [client, setClient] = useState<string>('');
+    const [viewMode, setViewMode] = useState('grid');
+    const [clientLogin, setClientLogin] = useState(false);
+
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleFetch();
@@ -63,8 +71,12 @@ export default function Index({
         handleFetch();
     };
 
-    const handleSelectService = (service: ServiceInterface) => {
-        setService(service);
+    const handleSelectService = (selectService: ServiceInterface) => {
+        if (selectService.id === service?.id) {
+            setService(null);
+        } else {
+            setService(selectService);
+        }
     };
 
     const handleNavigation = () => {
@@ -76,6 +88,35 @@ export default function Index({
         );
     };
 
+    const handleCreateClient = (data: ClientFormData) => {
+        router.post(route('clients.create.schedule'), data, {
+            onStart: () => {
+                setClientLogin(true);
+            },
+            onSuccess: (page) => {
+                router.reload({
+                    only: ['clients'],
+                    onSuccess: () => {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-expect-error
+                        const clientFind = page.props?.clients.find(
+                            (item: any) =>
+                                item.phone === data.phone &&
+                                item.label === data.name,
+                        );
+
+                        if (clientFind) {
+                            setClient(clientFind.value);
+                        }
+                    },
+                });
+            },
+            onFinish: () => {
+                setClientLogin(false);
+            },
+        });
+    };
+
     return (
         <DashboardLayout menus={menus}>
             <CardShared>
@@ -85,28 +126,38 @@ export default function Index({
                         'Selecione um serviço para agendar um horário manualmente.'
                     }
                 />
-                <CardContentShared className="space-y-6">
-                    <div className={'space-y-2'}>
-                        <h3
-                            className={
-                                'text-md mb-2 flex items-center gap-2 font-semibold text-gray-600'
-                            }
-                        >
-                            <User className={'h-4 w-4'} />
-                            Selecionar cliente
-                        </h3>
-                        <CustomSelect
-                            type="single"
-                            options={clients}
-                            value={client}
-                            onChange={setClient}
-                            placeholder="Selecione um cliente"
-                            searchPlaceholder="Pesquisar cliente"
+                <CardContentShared className="relative space-y-6">
+                    <div className={'flex items-end justify-between gap-4'}>
+                        <div className={'flex-1 space-y-2'}>
+                            <h3
+                                className={
+                                    'text-md mb-2 flex items-center gap-2 font-semibold text-gray-600'
+                                }
+                            >
+                                <User className={'h-4 w-4'} />
+                                Selecionar cliente
+                            </h3>
+                            <CustomSelect
+                                type="single"
+                                options={clients}
+                                value={client}
+                                onChange={setClient}
+                                placeholder="Selecione um cliente"
+                                searchPlaceholder="Pesquisar cliente"
+                            />
+                        </div>
+                        <CreateClients
+                            onCreateClient={handleCreateClient}
+                            loading={clientLogin}
                         />
                     </div>
+
                     <hr />
                     <div className={'space-y-6'}>
-                        <form className={'flex gap-4'} onSubmit={handleSearch}>
+                        <form
+                            className={'flex flex-col gap-4 md:flex-row'}
+                            onSubmit={handleSearch}
+                        >
                             <div
                                 className={
                                     'flex w-full items-center gap-2 rounded-md border border-input bg-transparent px-3 py-1'
@@ -143,40 +194,110 @@ export default function Index({
                                     Limpar pesquisa
                                 </Button>
                             )}
+                            <div className="flex gap-2">
+                                <Button
+                                    variant={
+                                        viewMode === 'grid'
+                                            ? 'default'
+                                            : 'outline'
+                                    }
+                                    type={'button'}
+                                    size="icon"
+                                    onClick={() => setViewMode('grid')}
+                                >
+                                    <Grid3X3 className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    variant={
+                                        viewMode === 'list'
+                                            ? 'default'
+                                            : 'outline'
+                                    }
+                                    type={'button'}
+                                    size="icon"
+                                    onClick={() => setViewMode('list')}
+                                >
+                                    <List className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </form>
                         <Separator />
                         {loading ? (
                             <CardLoading />
                         ) : services.length > 0 ? (
                             <ul
-                                className={
-                                    'grid grid-cols-1 gap-4 md:grid-cols-4'
-                                }
+                                className={cn(
+                                    `${viewMode === 'grid' ? 'grid grid-cols-1 gap-4 md:grid-cols-4' : 'flex flex-col gap-2'}`,
+                                )}
                             >
                                 {services.map((item) => (
                                     <li key={item.id}>
-                                        <BlockService
-                                            service={item}
-                                            action={() =>
-                                                handleSelectService(item)
-                                            }
-                                            active={item.id === service?.id}
-                                        />
+                                        {viewMode === 'grid' ? (
+                                            <BlockService
+                                                service={item}
+                                                action={() =>
+                                                    handleSelectService(item)
+                                                }
+                                                active={item.id === service?.id}
+                                            />
+                                        ) : (
+                                            <ServiceList
+                                                service={item}
+                                                action={() =>
+                                                    handleSelectService(item)
+                                                }
+                                                active={item.id === service?.id}
+                                            />
+                                        )}
                                     </li>
                                 ))}
                             </ul>
                         ) : (
                             <NotFound />
                         )}
-                        <div className={'flex w-full justify-end'}>
-                            <Button
-                                type="button"
-                                disabled={!client || !service}
-                                onClick={handleNavigation}
-                            >
-                                <Calendar className="mr-2 h-4 w-4" />
-                                Agendar
-                            </Button>
+                    </div>
+                    <Separator className={'bg-transparent pt-20'} />
+                    {/* Button */}
+                    <div className="absolute bottom-0 left-0 right-0 border-t bg-white p-4">
+                        <div className="mx-auto flex w-full flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-0">
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
+                                    <span
+                                        className={`h-2 w-2 rounded-full ${client ? 'bg-primary' : 'bg-gray-300'}`}
+                                    />
+                                    <span className="text-sm text-gray-600">
+                                        Cliente
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span
+                                        className={`h-2 w-2 rounded-full ${service ? 'bg-primary' : 'bg-gray-300'}`}
+                                    />
+                                    <span className="text-sm text-gray-600">
+                                        Serviço
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                    <span className="text-sm text-gray-600">
+                                        Total:
+                                    </span>
+                                    <span className="ml-2 text-lg font-semibold">
+                                        {new Intl.NumberFormat('pt-BR', {
+                                            style: 'currency',
+                                            currency: 'BRL',
+                                        }).format(service?.price ?? 0)}
+                                    </span>
+                                </div>
+                                <Button
+                                    disabled={!client || !service}
+                                    onClick={handleNavigation}
+                                >
+                                    <Calendar className="mr-2 h-4 w-4" />
+                                    Agendar Horário
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </CardContentShared>

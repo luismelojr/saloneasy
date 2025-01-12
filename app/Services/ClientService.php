@@ -50,4 +50,9 @@ class ClientService
             throw new \Exception($e->getMessage());
         }
     }
+
+    public function findByPhone(string $phone)
+    {
+        return $this->model->where('phone', $phone)->first();
+    }
 }

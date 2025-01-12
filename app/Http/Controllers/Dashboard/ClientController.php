@@ -47,6 +47,16 @@ class ClientController extends Controller
         return redirect()->route('clients.index')->toast('Cliente criado com sucesso!');
     }
 
+    public function createSchedule(ClientRequest $request)
+    {
+        $data = $request->validated();
+        if (!$this->service->create($data)) {
+            return redirect()->route('clients.create')->toast('Cliente já cadastrado.', 'error');
+        }
+
+        return redirect()->back()->toast('Cliente criado com sucesso!');
+    }
+
     public function show(Client $client)
     {
         if (!Gate::allows('show-clients', $client)) {
@@ -90,5 +100,18 @@ class ClientController extends Controller
         $client->delete();
 
         return redirect()->route('clients.index')->toast('Cliente deletado com sucesso!');
+    }
+
+    public function existPhone(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|string'
+        ]);
+
+        $client = $this->service->findByPhone($request->phone);
+
+        return response()->json([
+            'exists' => !!$client,
+        ]);
     }
 }

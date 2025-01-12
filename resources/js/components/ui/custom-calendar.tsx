@@ -186,21 +186,13 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({
                     // Como deixar o botao com bg-primary se o dateSelected for igual ao selectedDate?
                     <Button
                         variant="default"
-                        className={`flex h-full w-full flex-col items-center justify-center rounded-none border-white bg-white text-black hover:border-primary hover:bg-primary hover:text-white ${isToday ? 'border-2 border-primary' : ''} ${selectedDate?.getDate() === date ? 'bg-primary text-white' : ''}`}
+                        className={`flex h-full w-full flex-col items-center justify-center rounded-none border-white bg-white text-gray-500 hover:border-primary hover:bg-primary hover:text-white ${isToday ? 'border-2 border-primary' : ''} ${selectedDate?.getDate() === date ? 'bg-primary text-white' : ''}`}
                         onClick={() => handleDateClick(date)}
                     >
                         <span className="text-sm font-medium">{date}</span>
                         <span className="text-xs">{numberOfSlots} vagas</span>
                     </Button>
                 ) : (
-                    // <Button
-                    //     variant="default"
-                    //     className={`flex h-full w-full flex-col items-center justify-center rounded-none border-white bg-white text-black hover:border-primary hover:bg-primary hover:text-white ${isToday ? 'border-2 border-primary' : ''} `}
-                    //     onClick={() => handleDateClick(date)}
-                    // >
-                    //     <span className="text-sm font-medium">{date}</span>
-                    //     <span className="text-xs">{numberOfSlots} vagas</span>
-                    // </Button>
                     <div
                         className={`relative z-10 flex h-full w-full items-center justify-center ${isToday ? 'border-2 border-primary' : ''} `}
                     >

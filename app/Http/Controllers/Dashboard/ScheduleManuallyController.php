@@ -35,6 +35,7 @@ class ScheduleManuallyController extends Controller
             return [
                 'value' => $client->id,
                 'label' => $client->name,
+                'phone' => $client->phone,
             ];
         })->toArray();
 

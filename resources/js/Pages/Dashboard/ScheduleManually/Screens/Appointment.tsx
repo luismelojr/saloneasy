@@ -108,7 +108,7 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                                 }
                             >
                                 <ShoppingBag className={'h-4 w-4'} />
-                                Detalhes do serviço e cliente
+                                Detalhes do serviço e cliente selecionado
                             </h3>
                             <div
                                 className={
@@ -131,7 +131,7 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                             </h3>
                             <div
                                 className={
-                                    'grid grid-cols-1 items-start gap-2 md:grid-cols-2 md:gap-0'
+                                    'grid grid-cols-1 items-start gap-2 md:grid-cols-2 md:gap-4'
                                 }
                             >
                                 <CustomCalendar

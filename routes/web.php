@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Clients
     Route::resource('clients', ClientController::class);
+    Route::post('clients/create/schedule', [ClientController::class, 'createSchedule'])->name('clients.create.schedule');
+    Route::post('clients/exist-phone', [ClientController::class, 'existPhone'])->name('clients.exist.phone');
 
     // Hours Schedules
     Route::get('hours-schedules', [ScheduleController::class, 'show'])->name('hours.schedules.show');
