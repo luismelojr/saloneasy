@@ -1,4 +1,5 @@
 import DashboardLayout from '@/components/layouts/dashboard-layout';
+import ButtonSelector from '@/components/shared/ButtonSelector';
 import CardShared from '@/components/shared/Card';
 import CardContentShared from '@/components/shared/CardContentShared';
 import CardTitleShared from '@/components/shared/CardTitleShared';
@@ -8,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import ButtonAction from '@/components/ui/button-action';
 import CustomCalendar from '@/components/ui/custom-calendar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
 import {
     AvailabilityInterface,
     ClientInterface,
@@ -18,7 +18,7 @@ import {
 import { ScheduleManuallyServiceFormInterface } from '@/types/forms';
 import { router, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { Calendar, ShoppingBag } from 'lucide-react';
+import { Calendar, Clock, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 
 const menus = [
@@ -76,7 +76,11 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
     };
 
     const handleSelectSlot = (slot: SlotInterface) => {
-        form.setData('datetime', slot.datetime);
+        if (form.data.datetime === slot.datetime) {
+            form.setData('datetime', null);
+        } else {
+            form.setData('datetime', slot.datetime);
+        }
     };
 
     const resetFormDateTimeAndSelectAvailability = () => {
@@ -140,50 +144,61 @@ export default function Index(props: ScheduleManuallyAppointmentProps) {
                                     onDateSelect={handleDateSelect}
                                     loading={loading}
                                 />
-                                {selectAvailability ? (
-                                    <div
+                                <div>
+                                    <h3
                                         className={
-                                            'grid grid-cols-1 gap-2 md:grid-cols-4'
+                                            'text-md mb-2 mt-4 flex items-center gap-2 font-semibold text-gray-600 md:hidden'
                                         }
                                     >
-                                        {loading
-                                            ? Array.from(
-                                                  { length: 4 },
-                                                  (_, index) => (
-                                                      <Skeleton
+                                        <Clock className={'h-4 w-4'} />
+                                        Horários disponíveis
+                                    </h3>
+                                    {selectAvailability ? (
+                                        <div
+                                            className={
+                                                'grid grid-cols-3 gap-2 md:grid-cols-4'
+                                            }
+                                        >
+                                            {loading
+                                                ? Array.from(
+                                                      { length: 4 },
+                                                      (_, index) => (
+                                                          <Skeleton
+                                                              key={index}
+                                                              className="h-12 w-full rounded-md"
+                                                          />
+                                                      ),
+                                                  )
+                                                : selectAvailability &&
+                                                  Object.values(
+                                                      selectAvailability.slots,
+                                                  ).map((slot, index) => (
+                                                      <ButtonSelector
                                                           key={index}
-                                                          className="h-12 w-full rounded-md"
+                                                          onSelectSlot={
+                                                              handleSelectSlot
+                                                          }
+                                                          slot={slot}
+                                                          activeSlot={
+                                                              form.data
+                                                                  .datetime ===
+                                                              slot.datetime
+                                                          }
                                                       />
-                                                  ),
-                                              )
-                                            : selectAvailability &&
-                                              Object.values(
-                                                  selectAvailability.slots,
-                                              ).map((slot, index) => (
-                                                  <button
-                                                      key={index}
-                                                      className={cn(
-                                                          `h-12 rounded-md border-2 text-sm font-medium transition-colors hover:bg-primary hover:text-white ${form.data.datetime === slot.datetime ? 'border-primary bg-primary text-white' : 'border-gray-200 text-gray-500'}`,
-                                                      )}
-                                                      onClick={() =>
-                                                          handleSelectSlot(slot)
-                                                      }
-                                                  >
-                                                      <span>{slot.time}</span>
-                                                  </button>
-                                              ))}
-                                    </div>
-                                ) : (
-                                    <div
-                                        className={
-                                            'flex w-full items-center justify-center rounded-md'
-                                        }
-                                    >
-                                        <span className={'text-gray-500'}>
-                                            Nenhuma data selecionada
-                                        </span>
-                                    </div>
-                                )}
+                                                  ))}
+                                        </div>
+                                    ) : (
+                                        <div
+                                            className={
+                                                'flex w-full items-center justify-center rounded-md'
+                                            }
+                                        >
+                                            <span className={'text-gray-500'}>
+                                                Nenhuma data selecionada
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className={'flex w-full justify-end'}>

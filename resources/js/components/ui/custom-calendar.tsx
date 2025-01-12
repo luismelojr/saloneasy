@@ -170,7 +170,7 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({
     const renderDay = (day: CalendarDay | null) => {
         if (!day)
             return (
-                <div className="relative h-14">
+                <div className="relative h-10 sm:h-14">
                     <StripedBackground />
                 </div>
             );
@@ -180,23 +180,31 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({
         const hasSlots = numberOfSlots > 0;
 
         return (
-            <div className="relative h-14">
+            <div className="relative h-10 sm:h-14">
                 {!hasSlots && <StripedBackground />}
                 {hasSlots ? (
-                    // Como deixar o botao com bg-primary se o dateSelected for igual ao selectedDate?
                     <Button
                         variant="default"
-                        className={`flex h-full w-full flex-col items-center justify-center rounded-none border-white bg-white text-gray-500 hover:border-primary hover:bg-primary hover:text-white ${isToday ? 'border-2 border-primary' : ''} ${selectedDate?.getDate() === date ? 'bg-primary text-white' : ''}`}
+                        className={`flex h-full w-full flex-col items-center justify-center -space-y-1 rounded-none border-white bg-white px-0 text-gray-500 hover:border-primary hover:bg-primary hover:text-white ${isToday ? 'border-2 border-primary' : ''} ${selectedDate?.getDate() === date ? 'bg-primary text-white' : ''}`}
                         onClick={() => handleDateClick(date)}
                     >
-                        <span className="text-sm font-medium">{date}</span>
-                        <span className="text-xs">{numberOfSlots} vagas</span>
+                        <span className="text-xs font-medium sm:text-sm">
+                            {date}
+                        </span>
+                        <span className="hidden text-[10px] sm:block sm:text-xs">
+                            {numberOfSlots} vagas
+                        </span>
+                        <span className="text-[9.5px] sm:hidden">
+                            {numberOfSlots} vagas
+                        </span>
                     </Button>
                 ) : (
                     <div
-                        className={`relative z-10 flex h-full w-full items-center justify-center ${isToday ? 'border-2 border-primary' : ''} `}
+                        className={`relative z-10 flex h-full w-full items-center justify-center ${isToday ? 'border-2 border-primary' : ''}`}
                     >
-                        <span className="text-sm text-gray-500">{date}</span>
+                        <span className="text-xs text-gray-500 sm:text-sm">
+                            {date}
+                        </span>
                     </div>
                 )}
             </div>
@@ -207,16 +215,16 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({
         return Array.from({ length: 35 }, (_, index) => (
             <Skeleton
                 key={index}
-                className="h-14 w-full rounded-none bg-gray-300"
+                className="h-10 w-full rounded-none bg-gray-300 sm:h-14"
             />
         ));
     };
 
     return (
         <Card className="w-full max-w-lg bg-gray-100">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-2 pb-2 sm:p-6">
                 <div className="flex items-center space-x-2">
-                    <h2 className="text-lg font-medium capitalize">
+                    <h2 className="text-sm font-medium capitalize sm:text-lg">
                         {formatMonth(currentDate)} {currentDate.getFullYear()}
                     </h2>
                 </div>
@@ -224,27 +232,27 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({
                     <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-6 w-6 sm:h-8 sm:w-8"
                         onClick={previousMonth}
                     >
-                        <ChevronLeft className="h-4 w-4" />
+                        <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                     <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-6 w-6 sm:h-8 sm:w-8"
                         onClick={nextMonth}
                     >
-                        <ChevronRight className="h-4 w-4" />
+                        <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
                     </Button>
                 </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-1 sm:p-6">
                 <div className="mb-px grid grid-cols-7 gap-px">
                     {weekDays.map((day) => (
                         <div
                             key={day}
-                            className="flex h-8 items-center justify-center text-sm text-gray-500"
+                            className="flex h-6 items-center justify-center text-xs text-gray-500 sm:h-8 sm:text-sm"
                         >
                             {day}
                         </div>

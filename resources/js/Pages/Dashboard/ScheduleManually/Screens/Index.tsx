@@ -127,7 +127,11 @@ export default function Index({
                     }
                 />
                 <CardContentShared className="relative space-y-6">
-                    <div className={'flex items-end justify-between gap-4'}>
+                    <div
+                        className={
+                            'flex flex-col gap-4 md:flex-row md:items-end md:justify-between'
+                        }
+                    >
                         <div className={'flex-1 space-y-2'}>
                             <h3
                                 className={
