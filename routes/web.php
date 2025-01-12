@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\GetSlotServiceController;
 use App\Http\Controllers\Api\GetUserSearchController;
+use App\Http\Controllers\Clients\AuthClientController;
 use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\ConfigController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\Dashboard\ScheduleExclusionController;
 use App\Http\Controllers\Dashboard\ScheduleManuallyController;
 use App\Http\Controllers\Dashboard\ServiceController;
 use App\Http\Controllers\LandingPage\HomeController;
+use App\Http\Middleware\AuthenticateClient;
+use App\Http\Middleware\RedirectIfAuthenticatedClient;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -65,6 +68,20 @@ Route::middleware(['auth'])->group(function () {
 
     // Get Slot Service
     Route::get('slot-service', GetSlotServiceController::class)->name('slot.service');
+});
+
+// Routes With Clients
+Route::middleware(RedirectIfAuthenticatedClient::class)->group(function () {
+    Route::get('login-client', [AuthClientController::class, 'index'])->name('login.client');
+    Route::post('login-client/code', [AuthClientController::class, 'code'])->name('login.client.code');
+    Route::get('login-client/code', [AuthClientController::class, 'createCode'])->name('login.client.code.show');
+    Route::post('login-client/code/verify', [AuthClientController::class, 'verifyCode'])->name('login.client.code.verify');
+});
+
+Route::middleware(AuthenticateClient::class)->group(function () {
+    Route::get('dashboard-client', function () {
+       dd(auth()->guard('client')->user());
+    })->name('dashboard-client');
 });
 
 require __DIR__.'/auth.php';

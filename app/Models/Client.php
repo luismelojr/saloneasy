@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Traits\FilterTrait;
 use App\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Client extends Model
+class Client extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
     use HasFactory;
@@ -18,6 +18,7 @@ class Client extends Model
         'name',
         'phone',
         'birth_date',
+        'code'
     ];
 
     protected function casts(): array

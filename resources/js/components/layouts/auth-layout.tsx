@@ -1,6 +1,6 @@
 import Logo from '@/components/icons/logo';
 import { Link } from '@inertiajs/react';
-import { CalendarClock } from 'lucide-react';
+import { Scissors } from 'lucide-react';
 import React from 'react';
 
 interface AuthLayoutProps {
@@ -34,7 +34,9 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                 <div>
                     <Link href={route('home')}>
                         <div className={'flex items-center gap-4'}>
-                            <CalendarClock className={'h-7 w-7 text-white'} />
+                            <div className="flex h-8 w-8 transform items-center justify-center rounded-md bg-gradient-to-r from-orange-500 to-orange-400 shadow-lg transition-transform duration-300 hover:scale-105">
+                                <Scissors className="h-4 w-4 text-white" />
+                            </div>
                             <span
                                 className={'text-[20px] font-bold text-white'}
                             >
