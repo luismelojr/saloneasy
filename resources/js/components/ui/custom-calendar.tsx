@@ -191,7 +191,7 @@ export const CustomCalendar: React.FC<CustomCalendarProps> = ({
                         <span className="text-xs font-medium sm:text-sm">
                             {date}
                         </span>
-                        <span className="hidden text-[10px] sm:block sm:text-xs">
+                        <span className="hidden text-[10px] sm:block sm:text-[10px] md:text-xs">
                             {numberOfSlots} vagas
                         </span>
                         <span className="text-[9.5px] sm:hidden">
