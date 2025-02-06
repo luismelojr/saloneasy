@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +17,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique()->nullable();
+            $table->date('birth_date');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('user_type')->default(UserTypeEnum::CLIENT);
+            $table->string('registration_step')->nullable();
+            $table->foreignId('plan_id')->constrained('plans');
             $table->rememberToken();
             $table->timestamps();
         });

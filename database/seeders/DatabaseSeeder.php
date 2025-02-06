@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Client;
+use App\Models\Plan;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,11 +15,37 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $planFree = Plan::create([
+            'name' => 'Free',
+            'price' => 0.00,
+            'stripe_id' => 'price_1J4JZvKb6b0J9zjzZzsaZzZzZz',
+        ]);
 
-        $user = User::factory()->create([
+        $planEssential = Plan::create([
+            'name' => 'Essential',
+            'price' => 9.99,
+            'stripe_id' => 'price_1J4JZvKb6b0J9zjzZzZszZzZz',
+        ]);
+
+        $planPro = Plan::create([
+            'name' => 'Pro',
+            'price' => 19.99,
+            'stripe_id' => 'price_1J4JZvKb6b0J9zjzZzZzZzZz',
+        ]);
+
+        // Plan Feature Free
+        $planFree->features()->create([
+            'name' => '1 Cliente',
+        ]);
+
+        $planFree->features()->create([
+            'name' => '1 Serviço',
+        ]);
+
+        $user = $planFree->users()->create([
             'name' => 'Luis Henrique',
             'email' => 'junimhs10@gmail.com',
+            'birth_date' => '1996-10-30',
             'password' => bcrypt('junior'),
             'phone' => '62982296415',
         ]);
@@ -33,7 +60,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Pegar todos os clientes e vincular ao usuario com o id 1 relacionamento N:N
-         $clients = Client::all();
+        $clients = Client::all();
         $user->clients()->attach($clients);
     }
 }

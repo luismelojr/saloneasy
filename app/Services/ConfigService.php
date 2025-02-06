@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Config;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,6 +40,22 @@ class ConfigService
         } catch (\Throwable $e) {
             DB::rollBack();
             report($e);
+            throw new \Exception('An error occurred while saving the configuration.');
+        }
+    }
+
+    public function configBase(User $user)
+    {
+        try {
+            DB::transaction(function () use ($user) {
+                $dataBase = [
+                    'bio' => 'Bem-vindo ao meu perfil!',
+                    'color_primary' => '#000000',
+                    'color_secondary' => '#ffffff',
+                ];
+                $user->config()->create($dataBase);
+            });
+        } catch (\Throwable $e) {
             throw new \Exception('An error occurred while saving the configuration.');
         }
     }

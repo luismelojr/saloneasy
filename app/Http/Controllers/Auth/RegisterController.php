@@ -14,7 +14,7 @@ class RegisterController extends Controller
         private readonly UserService $service
     ){}
 
-    public function create(Request $request)
+    public function createStepOne(Request $request)
     {
         return Inertia::render('Auth/Register', [
             'plan' => $request->plan ?? 'basic'
@@ -25,16 +25,6 @@ class RegisterController extends Controller
     {
         $data = $request->validated();
         $user = $this->service->create($data);
-
-        if ($data['plan'] != 'basic') {
-            abort_unless(
-                $plan = collect(config('subscriptions.plans'))->get($data['plan']), 404
-            );
-            return Inertia::location($user->newSubscription('default', $plan['stripe_id'])->checkout([
-                'success_url' => route('home'),
-                'cancel_url' => route('register', ['plan' => $data['plan']]),
-            ])->redirect());
-        }
 
         auth()->login($user);
 

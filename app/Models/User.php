@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\RegistrationStepEnum;
+use App\Enums\UserTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,7 +27,10 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'birth_date',
         'password',
+        'user_type',
+        'registration_step'
     ];
 
     /**
@@ -47,6 +53,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birth_date' => 'date',
+            'user_type' => UserTypeEnum::class,
+            'registration_step' => RegistrationStepEnum::class
         ];
     }
 
@@ -79,5 +88,9 @@ class User extends Authenticatable
     public function appointments(): HasMany
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function plan(): BelongsTo {
+        return $this->belongsTo(Plan::class);
     }
 }

@@ -1,4 +1,5 @@
 import Logo from '@/components/icons/logo';
+import Toast from '@/components/ui/toast';
 import { Link } from '@inertiajs/react';
 import { Scissors } from 'lucide-react';
 import React from 'react';
@@ -106,7 +107,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                     </div>
                 </div>
             </div>
-            <div className={'flex h-full w-full flex-col px-10 py-20'}>
+            <div
+                className={
+                    'flex h-full min-h-screen w-full flex-col px-10 py-20'
+                }
+            >
                 <div
                     className={
                         'flex w-full items-center justify-center md:hidden'
@@ -118,6 +123,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                 </div>
                 <div>{children}</div>
             </div>
+            <Toast />
         </div>
     );
 }

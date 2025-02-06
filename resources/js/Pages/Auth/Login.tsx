@@ -54,7 +54,7 @@ export default function Login() {
                         asChild
                         className={'text-sm text-muted-foreground'}
                     >
-                        <Link href={route('register')}>
+                        <Link href={route('register.step.one')}>
                             Não tem uma conta? Crie uma agora
                         </Link>
                     </Button>

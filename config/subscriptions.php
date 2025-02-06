@@ -2,6 +2,11 @@
 
 return [
     'plans' => [
+        'free' => [
+            'name' => 'Grátis',
+            'price' => 0,
+            'stripe_id' => env('STRIPE_FREE_ID'),
+        ],
         'essential' => [
             'name' => 'Essencial',
             'price' => 49.90,

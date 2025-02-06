@@ -22,6 +22,7 @@ interface HomeProps {
 }
 export default function Home({ essential, pro }: HomeProps) {
     const handleNavigation = (action: 'login' | 'register') => {
+        if (action === 'register') router.get(route('register.step.one'));
         router.get(route(action));
     };
 

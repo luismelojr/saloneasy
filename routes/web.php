@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\ServiceController;
 use App\Http\Controllers\LandingPage\HomeController;
 use App\Http\Middleware\AuthenticateClient;
 use App\Http\Middleware\RedirectIfAuthenticatedClient;
+use App\Http\Middleware\ValidationUserStepMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,7 +25,7 @@ Route::get('/teste', function () {
 });
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', ValidationUserStepMiddleware::class])->group(function () {
     // Dashboard
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
